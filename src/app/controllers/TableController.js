@@ -45,7 +45,7 @@ class TableController {
 
         const options = {
             page: page,
-            limit: 5,
+            limit: 100,
 
             // tùy chọn xác định cách sắp xếp và so sánh trong truy vấn.
             collation: {

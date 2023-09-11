@@ -13,7 +13,7 @@ const product = new Schema({
     // video: { type: String, maxLength: 650 },
     // slug: { type: String, slug: 'name', unique: true },
 
-    name: { type: String},
+    name: { type: String },
     price: { type: Number },
     quantity: { type: Number },
     detail: { type: String, default: '' },
@@ -21,7 +21,7 @@ const product = new Schema({
     material: { type: String, default: '' },
     accessory: { type: String, default: '' },
     sold: { type: Number },
-    image: { type: String, default: '' },
+    image: [{ type: String }],
     Describe: { type: String, default: '' },
     slug: { type: String, slug: 'name', unique: true },
 }, {

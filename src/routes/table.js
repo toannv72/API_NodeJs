@@ -9,6 +9,6 @@ routerTable.post('/edit/:id', cookieAuthenticated,authenticatedAdmin,routerTable
 routerTable.post('/edit/delete/:id',cookieAuthenticated,authenticatedAdmin, routerTableController.delete)
 // routerTable.get('/edit/:id',cookieAuthenticated,authenticatedAdmin, routerTableController.edit)
 routerTable.get('/search?',cookieAuthenticated,authenticatedAdmin, routerTableController.search)
-routerTable.get('/',authenticatedAdmin, routerTableController.show)
+routerTable.get('/', routerTableController.show)
 
 module.exports = routerTable

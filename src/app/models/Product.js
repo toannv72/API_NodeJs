@@ -5,24 +5,16 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 mongoose.plugin(slug)
 
 const product = new Schema({
-    // image: { type: String, maxLength: 255, default: '' },
-    // name: { type: String, maxLength: 255 },
-    // year: { type: Number },
-    // nation: { type: String },
-    // description: { type: String },
-    // video: { type: String, maxLength: 650 },
-    // slug: { type: String, slug: 'name', unique: true },
-
-    name: { type: String },
-    price: { type: Number },
-    quantity: { type: Number },
+    name: { type: String ,required: true},
+    price: { type: Number ,required: true},
+    quantity: { type: Number ,required: true},
     detail: { type: String, default: '' },
     models: { type: String, default: '' },
     material: { type: String, default: '' },
     accessory: { type: String, default: '' },
-    sold: { type: Number },
+    sold: { type: Number, default: 0 },
     image: [{ type: String }],
-    Describe: { type: String, default: '' },
+    description: { type: String, default: '' },
     slug: { type: String, slug: 'name', unique: true },
 }, {
     timestamps: true

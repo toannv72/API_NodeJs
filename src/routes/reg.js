@@ -1,8 +1,8 @@
 const express = require('express')
 const routerCreate = express.Router()
-const routerReg = require('../app/controllers/RegController') 
+const routerReg = require('../app/controllers/RegController')
 
-routerCreate.post('/', routerReg.post)
-routerCreate.get('/', routerReg.show)
+routerCreate.route("/")
+    .post(routerReg.post)
 
 module.exports = routerCreate

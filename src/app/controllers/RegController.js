@@ -1,59 +1,72 @@
-
-const { mutipleMongooseToObject, mongoosesToObject } = require('../../util/mongoose');
-const Movie = require('../models/Product');
 const User = require('../models/User');
 var bcrypt = require('bcryptjs');
+const Token = require('../../config/db/config');
+var jwt = require('jsonwebtoken');
 
 class movieControllers {
     post(req, res, next) {
-        if (req.body.password.length <= 3) {
-            res.render("view/login/Reg",
-            {
-                error: {
-                    password: `Password must be at least 4 characters long`
-                }
-            })
-            return
-        }
-        if (req.body.username.length <= 5) {
-            res.render("view/login/Reg",
-            {
-                error: {
-                    username: `Username must be at least 5 characters long`
-                }
-            })
-            return
-        }
-        const formData = req.body
-        // mã hóa password
-        var salt = bcrypt.genSaltSync(10);
-        var hash = bcrypt.hashSync(formData.password, salt);
-
-        formData.password = hash
-        // console.log(formData);
-        const Users = new User(formData)
-        Users.save()
-            .then(() =>
-                res.redirect('/login')
-                // res.json(formData)
-            )
-            .catch((error) => {
-                res.render("view/login/Reg",
+        try {
+            const formData = req.body
+            if (formData.password.length <= 3 || formData.username.length <= 5 || formData?.phone.length <= 9) {
+                return res.status(500).send(
                     {
                         error: {
-                            error: `This account already exists, please choose another account!`
+                            username: `Username must be at least 6 characters long`,
+                            phone: `Phone must be at least 10 characters long`,
+                            password: `Password must be at least 4 characters long`
                         }
                     })
 
-            })
-        // await Tank.create({ size: 'small' });
+            }
+            // mã hóa password
+            var salt = bcrypt.genSaltSync(10);
+            var hash = bcrypt.hashSync(formData.password, salt);
+            var password =formData.password
+            formData.password = hash
+            formData.name = formData.username
 
-        // res.send(`oke`)
-        // res.json(req.body)
+            // console.log(formData);
+            const Users = new User(formData)
+            Users.save()
+                .then(() =>
+                    User.findOne({ username: formData.username })
+                        .then((user) => {
+                            user === null ?
+                                res.status(401).send({
+                                    error: "Invalid username or password.",
+                                }) :
+                                bcrypt.compare(password, user.password, function (err, check) {
 
-    }
-    show(req, res) {
-        res.render('view/login/Reg')
+                                    if (check) {
+                                        // var token = jwt.sign({ exp: Math.floor(Date.now() / 1000) + (10), user }, 'shhhhh');
+                                        var token = jwt.sign({ user }, Token.refreshToken);
+                                        res.cookie("accessToken", token);
+                                        return res.json({ ...user, accessToken: token })
+
+                                    }
+                                    return res.status(401).send({
+                                        error: "Invalid username or password.",
+                                    })
+                                });
+
+
+                        })
+                        .catch(next => {
+
+                            res.status(500).json(next)
+
+                        })
+
+
+                )
+                .catch((error) => {
+                    res.status(500).send(error)
+                })
+
+        } catch (error) {
+            res.status(500).send(error)
+        }
+
     }
 }
 module.exports = new movieControllers;

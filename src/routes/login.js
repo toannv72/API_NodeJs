@@ -6,6 +6,5 @@ routerCreate
     .route("/")
     .post( routerLogin.post)
     
-// routerCreate.get('/', routerLogin.show)
 
 module.exports = routerCreate

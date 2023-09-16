@@ -1,15 +1,15 @@
 const express = require('express')
 const routerProduct = express.Router()
-const  MovieControllers  = require('../app/controllers/MovieController')
+const  ProductControllers  = require('../app/controllers/ProductControllers')
 const {authenticatedAdmin} = require('../config/db/authenticatedAdmin')
 
 
 
-routerProduct.delete('/:name', MovieControllers.index)
-routerProduct.get('/search?', MovieControllers.search)
-routerProduct.get('/:slug', MovieControllers.index)
-routerProduct.put('/:slug', MovieControllers.put)
-routerProduct.post('/', MovieControllers.post)
-routerProduct.get('/', MovieControllers.show)
+routerProduct.delete('/:id', ProductControllers.delete)
+routerProduct.get('/search?', ProductControllers.search)
+routerProduct.get('/:id', ProductControllers.get)
+routerProduct.put('/:id', ProductControllers.put)
+routerProduct.post('/', ProductControllers.post)
+routerProduct.get('/', ProductControllers.show)
 
 module.exports = routerProduct

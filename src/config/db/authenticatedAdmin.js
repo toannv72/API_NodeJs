@@ -11,14 +11,12 @@ module.exports = {
           return next();
         }
         else {
-          // res.redirect("/login");
-          // res.send("khong co quyen truy cap")
-          return res.status(401).json({401:'khong co quyen truy cap', })
+          return res.status(401).json({ 401: 'khong co quyen truy cap', })
         }
       } catch (err) {
-        return res.status(401).json({401:'401' })
+        return res.status(401).json({ 401: '401' })
       }
     }
-    return res.status(401).json({401:'401' })
+    return res.status(401).json({ 401: '401' })
   },
 };

@@ -3,7 +3,7 @@ var bcrypt = require('bcryptjs');
 const Token = require('../../config/db/config');
 var jwt = require('jsonwebtoken');
 
-class movieControllers {
+class RegController {
     post(req, res, next) {
         try {
             const formData = req.body
@@ -69,4 +69,4 @@ class movieControllers {
 
     }
 }
-module.exports = new movieControllers;
+module.exports = new RegController;

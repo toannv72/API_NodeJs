@@ -1,26 +1,13 @@
 const Product = require('../models/Product');
-class movieControllers {
-    index(req, res, next) {
-        try {
-            Product.findOne({ slug: req.params.slug })
-                .then((movies => {
-                    res.json(movies)
-                }
-                ))
-                .catch(next)
-        } catch (err) {
-            res.json(err)
-        }
+class ProductControllers {
 
-
-    }
 
     put(req, res, next) {
 
-        Product.findOneAndUpdate({ slug: req.params.slug },
+        Product.findByIdAndUpdate(req.params.id,
             req.body)
-            .then((movies => {
-                res.json(movies)
+            .then((product => {
+                res.json(product)
             }
             ))
             .catch(next =>
@@ -134,5 +121,17 @@ class movieControllers {
         })
     }
 
+    get(req, res, next) {
+        const page = req.params.id
+        
+    }
+
+    delete(req, res, next) {
+        const id = req.query.id // Trang hiện tại, mặc định là trang 1
+
+    }
+
+
+
 }
-module.exports = new movieControllers;
+module.exports = new ProductControllers;

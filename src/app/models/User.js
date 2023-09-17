@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const MongooseDelete = require('mongoose-delete');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const slug = require('mongoose-slug-generator')
 const Schema = mongoose.Schema;
 mongoose.plugin(slug)
@@ -10,12 +12,15 @@ const User = new Schema({
     address: { type: String, maxLength: 255, default: '' },
     name: { type: String, maxLength: 255, default: '' },
     avatar: { type: String, maxLength: 255, default: '' },
-    admin: { type: Boolean, default: false }
+    admin: { type: Boolean, default: false },
+    deletedAt: { type: String, maxLength: 255, default: null },
 },
     {
         timestamps: true
     }
 )
 
+User.plugin(MongooseDelete,{ deletedAt : true , overrideMethods: 'all' });
+User.plugin(mongoosePaginate);
 module.exports = mongoose.model('user', User);
 

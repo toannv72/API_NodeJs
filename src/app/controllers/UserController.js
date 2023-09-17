@@ -1,12 +1,16 @@
-const Product = require('../models/Product');
-class ProductControllers {
+const User = require('../models/User');
+class UserController {
 
 
     put(req, res, next) {
-
-        Product.findByIdAndUpdate(req.params.id,
-            req.body,{ new: true })
+        console.log(req.body);
+        User.findByIdAndUpdate(req.params.id,
+            req.body)
             .then((product => {
+                if (!product) {
+                return res.status(404).send({error: 'User not found'})
+                    
+                }
                 res.json(product)
             }
             ))
@@ -17,17 +21,16 @@ class ProductControllers {
 
 
     trash(req, res, next) {
-        Product.findDeleted()
+        User.findDeleted()
             .then(courses =>
                 res.json(courses))
             .catch(next)
-
     }
 
     restore(req, res, next) {
-        Product.restore({ _id: req.params.id })
+        User.restore({ _id: req.params.id })
             .then(() => {
-                Product.findByIdAndUpdate(req.params.id,
+                User.findByIdAndUpdate(req.params.id,
                     // req.body
                     {
                         "deleted": false
@@ -59,14 +62,14 @@ class ProductControllers {
         };
         if (formData === "") {
 
-            Product.find({})
+            User.find({})
                 .then((movies) => {
                     res.json({ "movie": [movies] })
                 })
                 .catch(next)
         } else {
 
-            Product.paginate({ name: { $regex: escapedSearchTerm } }, options, function (err, result) {
+            User.paginate({ name: { $regex: escapedSearchTerm } }, options, function (err, result) {
 
                 if (result.totalPages < result.page) {
                     const options1 = {
@@ -78,7 +81,7 @@ class ProductControllers {
                             locale: 'en',
                         },
                     };
-                    Product.paginate({ name: { $regex: escapedSearchTerm } }, options1, function (err, data) {
+                    User.paginate({ name: { $regex: escapedSearchTerm } }, options1, function (err, data) {
 
 
                         return res.json(
@@ -115,7 +118,7 @@ class ProductControllers {
 
     post(req, res, next) {
         const formData = req.body
-        const course = new Product(formData)
+        const course = new User(formData)
         course.save()
             .then(() => res.json(req.body))
             .catch((error) => {
@@ -125,7 +128,7 @@ class ProductControllers {
         // res.send(`oke`)
     }
 
-    show(req, res, next) {
+    get(req, res, next) {
         const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
         const limit = parseInt(req.query.limit) || 100; // Số lượng phần tử trên mỗi trang, mặc định là 10
         const options = {
@@ -136,33 +139,25 @@ class ProductControllers {
                 locale: 'en',
             },
         };
-        Product.paginate({}, options, function (err, result) {
+        User.paginate({}, options, function (err, result) {
             res.json(result)
         })
     }
 
-    get(req, res, next) {
-        try {
-            const id = req.params.id
-            Product.findById(id)
-                .then((Product => {
-                    res.json(Product)
-                }
-                ))
-                .catch(next => res.status(500).json({ error: 'Could not retrieve product.' }))
+    getOne(req, res, next){
 
-        } catch (error) {
-            res.status(500).json({ error: 'Could not retrieve product.' });
-        }
+        User.findById(req.params.id )
+        .then((data => res.json(data)))
+        .catch(err =>res.status(err))
     }
 
     delete(req, res, next) {
-        Product.delete({ _id: req.params.id })
-            .then((Product => {
-                res.send(Product)
+        User.delete({ _id: req.params.id })
+            .then((User => {
+                res.send(User)
             }
             ))
-            .catch(next => res.status(500).json({ error: 'Could not retrieve product.' }))
+            .catch(error => res.status(500).json({ error: 'Could not retrieve product.' }))
 
     } catch(error) {
         res.status(500).json(error);
@@ -172,4 +167,4 @@ class ProductControllers {
 
 
 }
-module.exports = new ProductControllers;
+module.exports = new UserController;

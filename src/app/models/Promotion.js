@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-
+const mongoosePaginate = require('mongoose-paginate-v2');
+const mongooseDelete = require('mongoose-delete');
 const promotionSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -27,20 +28,17 @@ const promotionSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    deletedAt: { type: String, maxLength: 255, default: null },
     isActive: {
         type: Boolean,
         default: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    },
-});
-
+}, {
+    timestamps: true
+}
+);
+Promotion.plugin(mongooseDelete,{ deletedAt : true , overrideMethods: 'all' });
+Promotion.plugin(mongoosePaginate);
 const Promotion = mongoose.model('Promotion', promotionSchema);
 
 module.exports = Promotion;

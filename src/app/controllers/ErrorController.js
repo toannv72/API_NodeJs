@@ -7,11 +7,11 @@ class homeControllers {
     index(req, res, next) {
         if (req.cookies.accessToken) {
             try {
-                var data = jwt.verify(req.cookies.accessToken, Token.refreshToken);
 
-                res.status(404).render('view/Error404',
+                res.status(404).json(
                     {
-                        login: true,
+                        error: "404",
+
                     })
                 // res.json(movies)
 
@@ -19,11 +19,18 @@ class homeControllers {
 
             } catch (err) {
 
-                res.render('view/Error404')
+                res.status(404).json(
+                    {
+                        error: "404",
+
+                    })
             }
         } else {
 
-            res.render('view/Error404')
+            res.status(404).json(
+                {
+                    error: "404",
+                })
 
         }
 

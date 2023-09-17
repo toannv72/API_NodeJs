@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-
+const mongoosePaginate = require('mongoose-paginate-v2');
+const mongooseDelete = require('mongoose-delete');
 const feedbackSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -16,12 +17,12 @@ const feedbackSchema = new mongoose.Schema({
         maxLength: 1000,
         required: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
+    deletedAt: { type: String, maxLength: 255, default: null },
+}, {
+    timestamps: true
 });
-
+feedbackSchema.plugin(mongooseDelete, { deletedAt: true, overrideMethods: 'all' });
+feedbackSchema.plugin(mongoosePaginate);
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 
 module.exports = Feedback;

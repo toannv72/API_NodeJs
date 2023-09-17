@@ -7,6 +7,14 @@ class RegController {
     post(req, res, next) {
         try {
             const formData = req.body
+
+            if(formData.admin){
+                return res.status(500).send(
+                    {
+                        error: `you do not have access`
+                        
+                    })
+            }
             if (formData.password.length <= 3 || formData.username.length <= 5 || formData?.phone.length <= 9) {
                 return res.status(500).send(
                     {

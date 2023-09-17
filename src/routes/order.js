@@ -1,22 +1,22 @@
 const express = require('express')
 const routerOrder = express.Router()
-const routerLogin = require('../app/controllers/OrderController')
+const OrderController = require('../app/controllers/OrderController')
 
 
 routerOrder
     .route("/user/:id")
-    .get(routerLogin.getOrderUser)
+    .get(OrderController.getOrderUser)
 
 routerOrder
     .route("/:id")
-    .get(routerLogin.getOne)
-    .put(routerLogin.put)
-    .delete(routerLogin.delete)
+    .get(OrderController.getOne)
+    .put(OrderController.put)
+    .delete(OrderController.delete)
 
 routerOrder
     .route("/")
-    .get(routerLogin.get)
-    .post(routerLogin.post)
+    .get(OrderController.get)
+    .post(OrderController.post)
 
 
 module.exports = routerOrder

@@ -28,7 +28,7 @@ class OrderController {
         }
 
     }
-    
+
     getOne(req, res, next) {
         try {
             const id = req.params.id; // Lấy ID của đơn hàng từ URL
@@ -87,12 +87,14 @@ class OrderController {
 
     post(req, res, next) {
         try {
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+
             // Lấy thông tin đơn hàng từ req.body
-            const { user, products, totalAmount, shippingAddress, status } = req.body;
+            const { products, totalAmount, shippingAddress, status } = req.body;
 
             // Tạo một đối tượng đơn hàng mới
             const newOrder = new Order({
-                user,
+                user: checkTokenValid.user._id,
                 products,
                 totalAmount,
                 shippingAddress,
@@ -100,14 +102,20 @@ class OrderController {
             });
 
             // Lưu đơn hàng vào cơ sở dữ liệu
-            const savedOrder = newOrder.save();
+            newOrder.save()
+                .then((rating) => {
+                    return res.json(rating)
 
-            // Trả về đơn hàng đã tạo thành công
-            res.status(201).json(newOrder);
+                })
+                .catch((error) => {
+                    return res.status(500).json(error);
+
+                })
+
         } catch (error) {
             // Xử lý lỗi nếu có
             console.error(error);
-            res.status(500).json({ error: 'Could not create the order.' });
+            res.status(500).json(error);
         }
 
     }
@@ -145,29 +153,15 @@ class OrderController {
     }
 
     delete(req, res, next) {
-        try {
-            const { id } = req.params; // Lấy ID của đơn hàng từ URL
-
-            // Tìm đơn hàng theo ID và kiểm tra quyền truy cập của người dùng
-            const order = Order.findById(id);
-            if (!order) {
-                return res.status(404).json({ error: 'Order not found.' });
+        Order.delete({ _id: req.params.id })
+            .then((Product => {
+                res.send(Product)
             }
+            ))
+            .catch(next => res.status(500).json({ error: 'Could not retrieve product.' }))
 
-            // Kiểm tra xem người dùng có quyền xóa đơn hàng không
-            if (order.user.toString() !== req.user._id.toString()) {
-                return res.status(403).json({ error: 'You do not have permission to delete this order.' });
-            }
-
-            // Xóa đơn hàng
-            order.remove();
-
-            // Trả về thông báo xóa thành công
-            res.json({ message: 'Order deleted successfully.' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Could not delete the order.' });
-        }
+    } catch(error) {
+        res.status(500).json(error);
 
     }
 }

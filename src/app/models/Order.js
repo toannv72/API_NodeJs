@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const MongooseDelete = require('mongoose-delete');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const OrderSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true }, // Tham chiếu đến người dùng đã đặt hàng
@@ -16,8 +18,10 @@ const OrderSchema = new mongoose.Schema({
         enum: ['Pending', 'Processing', 'Shipped', 'Delivered'],
         default: 'Pending', // Trạng thái mặc định là "Chờ xử lý"
     },
+    deletedAt: { type: String, maxLength: 255, default: null },
 }, {
     timestamps: true
 });
-
+OrderSchema.plugin(MongooseDelete,{ deletedAt : true , overrideMethods: 'all' });
+OrderSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('order', OrderSchema);;

@@ -41,12 +41,13 @@ class OrderController {
                     if (!order) {
                         return res.status(404).json({ error: 'Order not found.' });
                     }
-
                     //  Kiểm tra xem người dùng có quyền truy cập đơn hàng không
-                    if (checkTokenValid.user._id.toString() !== order.user.toString()) {
-                        return res.status(403).json({ error: 'You do not have permission to access this order.' });
+                    console.log(11111111, checkTokenValid.user._id.toString() !== order.user.toString());
+                    console.log(2222222222, checkTokenValid.user.admin === false);
+                    if (checkTokenValid.user._id.toString() === order.user.toString() || checkTokenValid.user.admin) {
+                        return res.json(order);
                     }
-                    res.json(order);
+                    return res.status(403).json({ error: 'You do not have permission to access this order.' });
                 })
                 .catch(next => {
                     res.status(500).json(next)

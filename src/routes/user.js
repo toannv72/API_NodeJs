@@ -6,6 +6,10 @@ const { authenticatedAdmin } = require('../config/db/authenticatedAdmin')
 
 
 routerUser
+    .route("/changePassword/")
+    .put( UserController.changePassword)
+
+routerUser
     .route("/trash")
     .get(authenticatedAdmin, UserController.trash)
 

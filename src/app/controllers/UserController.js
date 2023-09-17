@@ -1,4 +1,7 @@
 const User = require('../models/User');
+const Token = require('../../config/db/config');
+var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 class UserController {
 
 
@@ -8,8 +11,8 @@ class UserController {
             req.body)
             .then((product => {
                 if (!product) {
-                return res.status(404).send({error: 'User not found'})
-                    
+                    return res.status(404).send({ error: 'User not found' })
+
                 }
                 res.json(product)
             }
@@ -25,6 +28,50 @@ class UserController {
             .then(courses =>
                 res.json(courses))
             .catch(next)
+    }
+
+    changePassword(req, res, next) {
+        const formData = req.body
+
+        var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+
+        User.findById(checkTokenValid.user._id)
+            .then((user) => {
+
+                bcrypt.compare(formData.password, user.password, function (err, check) {
+
+                    console.log(1111111111111, check);
+                    if (check) {
+                        var salt = bcrypt.genSaltSync(10);
+                        var hash = bcrypt.hashSync(formData.newPassword, salt);
+                        formData.newPassword = hash
+
+                        User.findByIdAndUpdate(checkTokenValid.user._id, { password: formData.newPassword }, { new: true })
+                            .then(courses => {
+                                var token = jwt.sign({ user }, Token.refreshToken);
+                                res.cookie("accessToken", token);
+                                return res.json({ ...courses, accessToken: token })
+                              
+                            })
+                            .catch(next => {
+                                res.json(next)
+                            })
+
+                    } else {
+                        return res.status(401).send({
+                            error: "Incorrect password",
+                        })
+                    }
+                });
+
+            })
+            .catch(next => {
+
+                res.status(500).json(next)
+
+            })
+
+
     }
 
     restore(req, res, next) {
@@ -144,11 +191,11 @@ class UserController {
         })
     }
 
-    getOne(req, res, next){
+    getOne(req, res, next) {
 
-        User.findById(req.params.id )
-        .then((data => res.json(data)))
-        .catch(err =>res.status(err))
+        User.findById(req.params.id)
+            .then((data => res.json(data)))
+            .catch(err => res.status(err))
     }
 
     delete(req, res, next) {

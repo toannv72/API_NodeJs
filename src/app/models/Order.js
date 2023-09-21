@@ -15,7 +15,7 @@ const OrderSchema = new mongoose.Schema({
     shippingAddress: { type: String, maxLength: 255 }, // Địa chỉ giao hàng
     status: {
         type: String,
-        enum: ['Pending', 'Processing', 'Shipped', 'Delivered'],
+        enum: ['Pending', 'Processing', 'Shipped', 'Delivered','Canceled'],
         default: 'Pending', // Trạng thái mặc định là "Chờ xử lý"
     },
     deletedAt: { type: String, maxLength: 255, default: null },

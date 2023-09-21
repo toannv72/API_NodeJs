@@ -130,14 +130,14 @@ class ProductControllers {
         const limit = parseInt(req.query.limit) || 100; // Số lượng phần tử trên mỗi trang, mặc định là 10
         const options = {
             page: page,
-            limit: limit,
+            limit: 1000000000000,
             // tùy chọn xác định cách sắp xếp và so sánh trong truy vấn.
             collation: {
                 locale: 'en',
             },
         };
         Product.paginate({}, options, function (err, result) {
-            res.json(result)
+           return res.json(result)
         })
     }
 

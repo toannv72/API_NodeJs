@@ -1,7 +1,7 @@
 
 const routerLogin = require("./login");
 const routerReg = require("./reg");
-const routerHome = require("./home");
+const routerAdmin = require("./admin");
 const router404 = require("./Error404");
 const routerProduct = require("./product");
 const routerTable = require("./table");
@@ -18,10 +18,10 @@ module.exports = function (app) {
   app.use('/api/user', routerUser)
   app.use('/api/rating', routerRating)
   app.use('/api/feedback', routerFeedback)
+  app.use('/api/admin', routerAdmin)
 
 
 
   app.use('/api/table', routerTable)
-  app.use('/api/', routerHome)
   app.use('*', router404)
 };

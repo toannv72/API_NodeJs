@@ -10,7 +10,7 @@ const product = new Schema({
     quantity: { type: Number ,required: true},
     detail: { type: String, default: '' },
     models: { type: String, default: '' },
-    material: { type: String, default: '' },
+    material:[{ type: String , enum: ['Kim loại','Gỗ','Nhựa'],required: true}],
     accessory: { type: String, default: '' },
     sold: { type: Number, default: 0 },
     image: [{ type: String }],

@@ -8,28 +8,48 @@ class RegController {
         try {
             const formData = req.body
 
-            if(formData.admin){
+            if (formData.admin) {
                 return res.status(500).send(
                     {
                         error: `you do not have access`
-                        
+
                     })
             }
-            if (formData.password.length <= 3 || formData.username.length <= 5 || formData?.phone.length <= 9) {
-                return res.status(500).send(
+            if (formData.password.length <= 4 ) {
+                return res.status(402).send(
                     {
-                        error: {
-                            username: `Username must be at least 6 characters long`,
-                            phone: `Phone must be at least 10 characters long`,
-                            password: `Password must be at least 4 characters long`
-                        }
+                        error: `Password must be at least 5 characters long`
+                     
                     })
 
             }
-            // mã hóa password
+
+            if (formData.username.length <= 5) {
+                return res.status(402).send(
+                    {
+                        error: `Username must be at least 6 characters long`
+                    })
+
+            }
+            if (formData?.phone.length <= 9) {
+                return res.status(402).send(
+                    {
+                        error: `Phone must be at least 10 characters long`
+                    })
+
+            }
+            User.findOne({ username: formData.username })
+            .then((user,next)=>{
+                if (user!==null) {
+                    return res.status(402).send(
+                        {
+                            error: `Tên tài khoản đã tồn tại vui lòng tạo tài khoản khác!`
+                        })
+                }
+                 // mã hóa password
             var salt = bcrypt.genSaltSync(10);
             var hash = bcrypt.hashSync(formData.password, salt);
-            var password =formData.password
+            var password = formData.password
             formData.password = hash
             formData.name = formData.username
 
@@ -71,6 +91,10 @@ class RegController {
                     res.status(500).send(error)
                 })
 
+            })
+
+
+           
         } catch (error) {
             res.status(500).send(error)
         }

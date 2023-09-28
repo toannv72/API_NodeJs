@@ -5,6 +5,7 @@ const routerLogin = require('../app/controllers/LoginController')
 routerCreate
     .route("/")
     .post( routerLogin.post)
+    .get( routerLogin.get)
     
 
 module.exports = routerCreate

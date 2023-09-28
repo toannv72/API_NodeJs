@@ -35,6 +35,22 @@ class movieControllers {
 
             })
     }
-
+    get(req, res, next) {
+        if (req.cookies.accessToken) {
+            try {
+                var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+               
+                if (checkTokenValid.user) {
+                    return res.json({ login: true ,user:checkTokenValid.user});
+                }
+                else {
+                    return res.json({ login: false });
+                }
+            } catch (err) {
+                return res.status(401).json(err)
+            }
+        }
+        return res.json({ login: false });
+    }
 }
 module.exports = new movieControllers;

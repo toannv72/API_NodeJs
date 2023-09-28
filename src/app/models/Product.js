@@ -7,10 +7,11 @@ mongoose.plugin(slug)
 const product = new Schema({
     name: { type: String ,required: true},
     price: { type: Number ,required: true},
+    reducedPrice: { type: Number ,required: true},
     quantity: { type: Number ,required: true},
-    detail: { type: String, default: '' },
     models: { type: String, default: '' },
-    material:[{ type: String , enum: ['Kim loại','Gỗ','Nhựa'],required: true}],
+    shape: { type: String, default: '' },
+    material:[{ type: String , enum: ['Kim loại','Gỗ','Nhựa']}],
     accessory: { type: String, default: '' },
     sold: { type: Number, default: 0 },
     image: [{ type: String }],

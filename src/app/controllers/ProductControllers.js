@@ -1,3 +1,4 @@
+const { addLeadingZeros } = require('../../util/UtilsFuntion');
 const Product = require('../models/Product');
 class ProductControllers {
 
@@ -5,7 +6,7 @@ class ProductControllers {
     put(req, res, next) {
 
         Product.findByIdAndUpdate(req.params.id,
-            req.body,{ new: true })
+            req.body, { new: true })
             .then((product => {
                 res.json(product)
             }
@@ -115,8 +116,44 @@ class ProductControllers {
 
     post(req, res, next) {
         const formData = req.body
+        const materialArray = formData.material
         const course = new Product(formData)
-        course.save()
+        // here
+        switch (materialArray[0]) {
+            case "Gỗ":
+                const numberMaterial = 0;
+                if (Product.find().size != 0) {
+                    Product.find({ materialCode: "GAA" }).then(fiterProduct => {
+                        fiterProduct.forEach(product => {
+                            const result = product.materialName.slice(3); // Loại bỏ 3 ký tự đầu
+                            const numberResult = parseInt(result, 10); // Chuyển đổi thành số nguyên với hệ cơ số 10
+                            if (numberResult > numberMaterial) {
+                                numberMaterial = numberResult;
+                            }
+                            console.log("Thông tin của sản phẩm là : " + Product.name)
+                        }).catch(err => {
+                            console.log("Không thể lấy được thông tin của sản phẩm  ")
+                        })
+                    })
+                    course.materialCode = "GAA";
+                    course.materialName = "GAA" + addLeadingZeros(numberMaterial);
+                } else {
+                    course.materialCode = "GAA";
+                    course.materialName = "GAA" + addLeadingZeros(numberMaterial);
+                }
+                break;
+
+            case "Nhựa":
+
+                break;
+            case "Kim Loại":
+
+                break;
+        }
+        // here
+        // save thông tin
+        course.
+            course.save()
             .then(() => res.json(req.body))
             .catch((error) => {
                 res.json(error)
@@ -137,7 +174,7 @@ class ProductControllers {
             },
         };
         Product.paginate({}, options, function (err, result) {
-           return res.json(result)
+            return res.json(result)
         })
     }
 

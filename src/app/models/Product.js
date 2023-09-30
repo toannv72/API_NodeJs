@@ -5,14 +5,16 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 const mongooseDelete = require('mongoose-delete');
 mongoose.plugin(slug)
 const product = new Schema({
-    name: { type: String ,required: true},
-    price: { type: Number ,required: true},
-    reducedPrice: { type: Number ,required: true},
-    quantity: { type: Number ,required: true},
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    reducedPrice: { type: Number, required: true },
+    quantity: { type: Number, required: true },
     models: { type: String, default: '' },
     shape: { type: String, default: '' },
-    material:[{ type: String , enum: ['Kim loại','Gỗ','Nhựa']}],
+    material: [{ type: String, enum: ['Kim loại', 'Gỗ', 'Nhựa'] }],
     accessory: { type: String, default: '' },
+    materialCode: { type: String, require: true },
+    materialName: { type: String, require: true },
     sold: { type: Number, default: 0 },
     image: [{ type: String }],
     description: { type: String, default: '' },
@@ -21,7 +23,7 @@ const product = new Schema({
 }, {
     timestamps: true
 })
-product.plugin(mongooseDelete,{ deletedAt : true , overrideMethods: 'all' });
+product.plugin(mongooseDelete, { deletedAt: true, overrideMethods: 'all' });
 product.plugin(mongoosePaginate);
 module.exports = mongoose.model('products', product);
 

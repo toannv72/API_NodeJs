@@ -121,39 +121,117 @@ class ProductControllers {
         // here
         switch (materialArray[0]) {
             case "Gỗ":
-                const numberMaterial = 0;
-                if (Product.find().size != 0) {
-                    Product.find({ materialCode: "GAA" }).then(fiterProduct => {
-                        fiterProduct.forEach(product => {
-                            const result = product.materialName.slice(3); // Loại bỏ 3 ký tự đầu
-                            const numberResult = parseInt(result, 10); // Chuyển đổi thành số nguyên với hệ cơ số 10
-                            if (numberResult > numberMaterial) {
-                                numberMaterial = numberResult;
-                            }
-                            console.log("Thông tin của sản phẩm là : " + Product.name)
-                        }).catch(err => {
-                            console.log("Không thể lấy được thông tin của sản phẩm  ")
-                        })
-                    })
-                    course.materialCode = "GAA";
-                    course.materialName = "GAA" + addLeadingZeros(numberMaterial);
-                } else {
-                    course.materialCode = "GAA";
-                    course.materialName = "GAA" + addLeadingZeros(numberMaterial);
-                }
+                var numberMaterial = 0;
+                Product.estimatedDocumentCount({}, (err, count) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        if (count > 0) {
+                            Product.find({ materialCode: "GAA" })
+                                .then(filterProduct => {
+                                    if (filterProduct.length === 0) {
+                                        var tmpNumberMaterial = numberMaterial + 1;
+                                        course.materialName = "GAA" + addLeadingZeros(tmpNumberMaterial);
+                                        course.materialCode = "GAA";
+                                    } else {
+                                        filterProduct.forEach(product => {
+                                            var result = product.materialName.slice(3); // Loại bỏ 3 ký tự đầu
+                                            var numberResult = parseInt(result, 10); // Chuyển đổi thành số nguyên với hệ cơ số 10
+                                            if (numberResult > numberMaterial) {
+                                                numberMaterial = numberResult;
+                                            }
+                                        })
+                                        var tmpNumberMaterial = numberMaterial + 1;
+                                        course.materialName = "GAA" + addLeadingZeros(tmpNumberMaterial);
+                                        course.materialCode = "GAA";
+                                    }
+                                }).catch(err => {
+                                    console.log("Không thể lấy được thông tin của sản phẩm !!!")
+                                })
+                        } else {
+                            var tmpNumberMaterial = numberMaterial + 1;
+                            course.materialName = "GAA" + addLeadingZeros(tmpNumberMaterial);
+                            course.materialCode = "GAA";
+                        }
+                    }
+                });
                 break;
-
             case "Nhựa":
-
+                var numberMaterial = 0;
+                Product.estimatedDocumentCount({}, (err, count) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        if (count > 0) {
+                            Product.find({ materialCode: "NAA" })
+                                .then(filterProduct => {
+                                    if (filterProduct.length === 0) {
+                                        var tmpNumberMaterial = numberMaterial + 1;
+                                        course.materialName = "NAA" + addLeadingZeros(tmpNumberMaterial);
+                                        course.materialCode = "NAA";
+                                    } else {
+                                        filterProduct.forEach(product => {
+                                            var result = product.materialName.slice(3); // Loại bỏ 3 ký tự đầu
+                                            var numberResult = parseInt(result, 10); // Chuyển đổi thành số nguyên với hệ cơ số 10
+                                            if (numberResult > numberMaterial) {
+                                                numberMaterial = numberResult;
+                                            }
+                                        })
+                                        var tmpNumberMaterial = numberMaterial + 1;
+                                        course.materialName = "NAA" + addLeadingZeros(tmpNumberMaterial);
+                                        course.materialCode = "NAA";
+                                    }
+                                }).catch(err => {
+                                    console.log("Không thể lấy được thông tin của sản phẩm !!!")
+                                })
+                        } else {
+                            var tmpNumberMaterial = numberMaterial + 1;
+                            course.materialName = "NAA" + addLeadingZeros(tmpNumberMaterial);
+                            course.materialCode = "NAA";
+                        }
+                    }
+                });
                 break;
-            case "Kim Loại":
-
+            case "Kim loại":
+                var numberMaterial = 0;
+                Product.estimatedDocumentCount({}, (err, count) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        if (count > 0) {
+                            Product.find({ materialCode: "KAA" })
+                                .then(filterProduct => {
+                                    if (filterProduct.length === 0) {
+                                        var tmpNumberMaterial = numberMaterial + 1;
+                                        course.materialName = "KAA" + addLeadingZeros(tmpNumberMaterial);
+                                        course.materialCode = "KAA";
+                                    } else {
+                                        filterProduct.forEach(product => {
+                                            var result = product.materialName.slice(3); // Loại bỏ 3 ký tự đầu
+                                            var numberResult = parseInt(result, 10); // Chuyển đổi thành số nguyên với hệ cơ số 10
+                                            if (numberResult > numberMaterial) {
+                                                numberMaterial = numberResult;
+                                            }
+                                        })
+                                        var tmpNumberMaterial = numberMaterial + 1;
+                                        course.materialName = "KAA" + addLeadingZeros(tmpNumberMaterial);
+                                        course.materialCode = "KAA";
+                                    }
+                                }).catch(err => {
+                                    console.log("Không thể lấy được thông tin của sản phẩm !!!")
+                                })
+                        } else {
+                            var tmpNumberMaterial = numberMaterial + 1;
+                            course.materialName = "KAA" + addLeadingZeros(tmpNumberMaterial);
+                            course.materialCode = "KAA";
+                        }
+                    }
+                });
                 break;
         }
         // here
         // save thông tin
-        course.
-            course.save()
+        course.save()
             .then(() => res.json(req.body))
             .catch((error) => {
                 res.json(error)

@@ -118,12 +118,14 @@ class ProductControllers {
         const formData = req.body
         const materialArray = formData.material
         const course = new Product(formData)
+        console.log(Product.find().size);
         // here
         switch (materialArray[0]) {
             case "Gỗ":
                 const numberMaterial = 0;
                 if (Product.find().size != 0) {
-                    Product.find({ materialCode: "GAA" }).then(fiterProduct => {
+                    Product.find({ materialCode: "GAA" })
+                    .then(fiterProduct => {
                         fiterProduct.forEach(product => {
                             const result = product.materialName.slice(3); // Loại bỏ 3 ký tự đầu
                             const numberResult = parseInt(result, 10); // Chuyển đổi thành số nguyên với hệ cơ số 10
@@ -131,15 +133,17 @@ class ProductControllers {
                                 numberMaterial = numberResult;
                             }
                             console.log("Thông tin của sản phẩm là : " + Product.name)
-                        }).catch(err => {
-                            console.log("Không thể lấy được thông tin của sản phẩm  ")
                         })
                     })
+                    .catch(err => {
+                        console.log("Không thể lấy được thông tin của sản phẩm  ")
+                    })
                     course.materialCode = "GAA";
-                    course.materialName = "GAA" + addLeadingZeros(numberMaterial);
-                } else {
+                    course.materialName = "GAA" + addLeadingZeros(numberMaterial+1);
+                } 
+                else {
                     course.materialCode = "GAA";
-                    course.materialName = "GAA" + addLeadingZeros(numberMaterial);
+                    course.materialName = "GAA" + addLeadingZeros(numberMaterial+1);
                 }
                 break;
 
@@ -152,8 +156,7 @@ class ProductControllers {
         }
         // here
         // save thông tin
-        course.
-            course.save()
+        course.save()
             .then(() => res.json(req.body))
             .catch((error) => {
                 res.json(error)
@@ -164,14 +167,16 @@ class ProductControllers {
 
     show(req, res, next) {
         const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
-        const limit = parseInt(req.query.limit) || 100; // Số lượng phần tử trên mỗi trang, mặc định là 10
+        const limit = parseInt(req.query.limit) || 10000000000; 
+        const sort = parseInt(req.query.sort) || -1; // Trang hiện tại, mặc định là trang 1
         const options = {
             page: page,
-            limit: 1000000000000,
+            limit: limit,
             // tùy chọn xác định cách sắp xếp và so sánh trong truy vấn.
             collation: {
                 locale: 'en',
             },
+            sort: { createdAt: sort },
         };
         Product.paginate({}, options, function (err, result) {
             return res.json(result)

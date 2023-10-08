@@ -16,7 +16,7 @@ routerOrder
 routerOrder
     .route("/")
     .get(OrderController.get)
-    .post(OrderController.post)
+    .post(OrderController.check,OrderController.post)
 
 
 module.exports = routerOrder

@@ -2,6 +2,7 @@ const Order = require('../models/Order');
 var bcrypt = require('bcryptjs');
 const Token = require('../../config/db/config');
 var jwt = require('jsonwebtoken');
+const Product = require('../models/Product');
 
 class OrderController {
 
@@ -86,39 +87,65 @@ class OrderController {
 
     }
 
+    check(req, res, next) {
+        const { products } = req.body;
+
+        async function checkProducts() {
+            for (var i = 0; i < products.length; i++) {
+                const productId = products[i]._id;
+                const quantityToReduce = products[i].quantity;
+                try {
+                    // Kiểm tra xem sản phẩm có đủ số lượng trong kho không
+                    const dbProduct = await Product.findById(productId);
+                    if (!dbProduct || dbProduct.quantity < quantityToReduce) {
+                        return res.status(400).json({ error: `Sản phẩm ${dbProduct.name} không đủ trong kho.` });
+                    }
+                } catch (error) {
+                    return res.status(500).json(error);
+                }
+            }
+            // Nếu tất cả sản phẩm đều đủ số lượng, thực hiện các yêu cầu tiếp theo
+            return next();
+        }
+        
+        // Gọi hàm async để chạy vòng lặp và kiểm tra sản phẩm
+        checkProducts();
+    }
     post(req, res, next) {
-        try {
-            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+        var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+        const { products, totalAmount, shippingAddress, status } = req.body;
 
-            // Lấy thông tin đơn hàng từ req.body
-            const { products, totalAmount, shippingAddress, status } = req.body;
+        for (var i = 0; i < products.length; i++) {
+            const productId = products[i]._id;
+            const quantityToReduce = products[i].quantity;
+            // Kiểm tra xem sản phẩm có đủ số lượng trong kho không
+            Product.findById(productId)
+                .then((dbProduct) => {
+                    const a = dbProduct.quantity - quantityToReduce;
+                    Product.findByIdAndUpdate(dbProduct._id, { quantity: a })
+                        .then((Product) => {
 
-            // Tạo một đối tượng đơn hàng mới
-            const newOrder = new Order({
-                user: checkTokenValid.user._id,
-                products,
-                totalAmount,
-                shippingAddress,
-                status,
-            });
-
-            // Lưu đơn hàng vào cơ sở dữ liệu
-            newOrder.save()
-                .then((rating) => {
-                    return res.json(rating)
-
+                        })
                 })
                 .catch((error) => {
                     return res.status(500).json(error);
-
                 })
-
-        } catch (error) {
-            // Xử lý lỗi nếu có
-            console.error(error);
-            res.status(500).json(error);
         }
 
+        const newOrder = new Order({
+            user: checkTokenValid.user._id,
+            products,
+            totalAmount,
+            shippingAddress,
+            status,
+        });
+        newOrder.save()
+            .then((rating) => {
+                return res.json(rating)
+            })
+            .catch((error) => {
+                return res.status(500).json(error);
+            })
     }
 
     put(req, res, next) {

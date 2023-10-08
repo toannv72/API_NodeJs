@@ -6,12 +6,10 @@ const Product = require('../models/Product');
 
 class OrderController {
 
-    get(req, res, next) {
+    getAdmin(req, res, next) {
         try {
-            const id = req.params.id; // Lấy ID của đơn hàng từ URL
-
             // Tìm đơn hàng theo ID và kiểm tra quyền truy cập của người dùng
-            const order = Order.findById(id);
+            const order = Order.find();
             if (!order) {
                 return res.status(404).json({ error: 'Order not found.' });
             }
@@ -29,12 +27,212 @@ class OrderController {
         }
 
     }
+    getUser(req, res, next) {
+        try {
+            // Tìm đơn hàng theo ID và kiểm tra quyền truy cập của người dùng
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            Order.find({ user: checkTokenValid.user._id })
+                .then((order) => {
 
+                    res.json(order);
+                })
+
+            // Trả về thông tin đơn hàng
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+
+    }
+
+    getUserPending(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            Order.paginate({ user: checkTokenValid.user._id, status: "Pending" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getUserProcessing(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            Order.paginate({ user: checkTokenValid.user._id, status: "Processing" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getUserProcessing(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            Order.paginate({ user: checkTokenValid.user._id, status: "Processing" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getUserProcessing(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            Order.paginate({ user: checkTokenValid.user._id, status: "Processing" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getUserShipped(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            Order.paginate({ user: checkTokenValid.user._id, status: "Shipped" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getUserDelivered(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            Order.paginate({ user: checkTokenValid.user._id, status: "Delivered" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getUserCanceled(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            Order.paginate({ user: checkTokenValid.user._id, status: "Canceled" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getUserReturned(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            Order.paginate({ user: checkTokenValid.user._id, status: "Returned" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
     getOne(req, res, next) {
         try {
             const id = req.params.id; // Lấy ID của đơn hàng từ URL
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
-
             // Tìm đơn hàng theo ID và kiểm tra quyền truy cập của người dùng
             Order.findById(id)
                 .then((order) => {
@@ -43,8 +241,6 @@ class OrderController {
                         return res.status(404).json({ error: 'Order not found.' });
                     }
                     //  Kiểm tra xem người dùng có quyền truy cập đơn hàng không
-                    console.log(11111111, checkTokenValid.user._id.toString() !== order.user.toString());
-                    console.log(2222222222, checkTokenValid.user.admin === false);
                     if (checkTokenValid.user._id.toString() === order.user.toString() || checkTokenValid.user.admin) {
                         return res.json(order);
                     }
@@ -62,20 +258,20 @@ class OrderController {
 
     getOrderUser(req, res, next) {
         try {
-            const user = req.params.id; // Lấy ID của user
+            const id = req.params.id; // Lấy ID của đơn hàng từ URL
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
-
             // Tìm đơn hàng theo ID và kiểm tra quyền truy cập của người dùng
-            Order.find({ user: user })
+            Order.findById(id)
                 .then((order) => {
+
                     if (!order) {
-                        return res.status(404).json({ error: 'Order user not found.' });
+                        return res.status(404).json({ error: 'Order not found.' });
                     }
                     //  Kiểm tra xem người dùng có quyền truy cập đơn hàng không
-                    if (checkTokenValid.user._id.toString() !== user.toString()) {
-                        return res.status(403).json({ error: 'You do not have permission to access this order.' });
+                    if (checkTokenValid.user._id.toString() === order.user.toString() || checkTokenValid.user.admin) {
+                        return res.json(order);
                     }
-                    res.json(order);
+                    return res.status(403).json({ error: 'You do not have permission to access this order.' });
                 })
                 .catch(next => {
                     res.status(500).json(next)
@@ -107,13 +303,13 @@ class OrderController {
             // Nếu tất cả sản phẩm đều đủ số lượng, thực hiện các yêu cầu tiếp theo
             return next();
         }
-        
+
         // Gọi hàm async để chạy vòng lặp và kiểm tra sản phẩm
         checkProducts();
     }
     post(req, res, next) {
         var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
-        const { products, totalAmount, shippingAddress, status } = req.body;
+        const { products, totalAmount, shippingAddress, status ,description,email} = req.body;
 
         for (var i = 0; i < products.length; i++) {
             const productId = products[i]._id;
@@ -135,9 +331,11 @@ class OrderController {
         const newOrder = new Order({
             user: checkTokenValid.user._id,
             products,
-            totalAmount,
-            shippingAddress,
+            totalAmount:totalAmount,
+            shippingAddress: shippingAddress,
+            description,
             status,
+            email
         });
         newOrder.save()
             .then((rating) => {

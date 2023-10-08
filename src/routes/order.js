@@ -1,22 +1,49 @@
 const express = require('express')
 const routerOrder = express.Router()
 const OrderController = require('../app/controllers/OrderController')
+const { authenticatedAdmin } = require('../config/db/authenticatedAdmin')
+
+routerOrder
+    .route("/user/pending")
+    .get(OrderController.getUserPending)
+routerOrder
+    .route("/user/processing")
+    .get(OrderController.getUserProcessing)
+routerOrder
+    .route("/user/shipped")
+    .get(OrderController.getUserShipped)
+routerOrder
+    .route("/user/delivered")
+    .get(OrderController.getUserDelivered)
+routerOrder
+    .route("/user/canceled")
+    .get(OrderController.getUserCanceled)
+routerOrder
+    .route("/user/returned")
+    .get(OrderController.getUserReturned)
 
 
 routerOrder
     .route("/user/:id")
     .get(OrderController.getOrderUser)
 
-routerOrder
-    .route("/:id")
-    .get(OrderController.getOne)
-    .put(OrderController.put)
-    .delete(OrderController.delete)
 
 routerOrder
+    .route("/user")
+    .get(OrderController.getUser)
+    .post(OrderController.check, OrderController.post)
+
+
+
+routerOrder
+    .route("/:id")
+    .get(authenticatedAdmin,OrderController.getOne)
+    .put(authenticatedAdmin,OrderController.put)
+    .delete(authenticatedAdmin, OrderController.delete)
+routerOrder
     .route("/")
-    .get(OrderController.get)
-    .post(OrderController.check,OrderController.post)
+    .get(authenticatedAdmin,OrderController.getAdmin)
+    .post(authenticatedAdmin,OrderController.check, OrderController.post)
 
 
 module.exports = routerOrder

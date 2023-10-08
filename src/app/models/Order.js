@@ -12,16 +12,18 @@ const OrderSchema = new mongoose.Schema({
         }
     ],
     totalAmount: { type: Number, required: true }, // Tổng số tiền cho đơn hàng
-    shippingAddress: { type: String, maxLength: 255 }, // Địa chỉ giao hàng
+    shippingAddress: { type: String, maxLength: 255 ,required: true},
+    description: { type: String, maxLength: 1000 },
+    email: { type: String, maxLength: 255 ,required: true},
     status: {
         type: String,
-        enum: ['Pending', 'Processing', 'Shipped', 'Delivered','Canceled'],
+        enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Canceled', 'Returned'],
         default: 'Pending', // Trạng thái mặc định là "Chờ xử lý"
     },
     deletedAt: { type: String, maxLength: 255, default: null },
 }, {
     timestamps: true
 });
-OrderSchema.plugin(MongooseDelete,{ deletedAt : true , overrideMethods: 'all' });
+OrderSchema.plugin(MongooseDelete, { deletedAt: true, overrideMethods: 'all' });
 OrderSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('order', OrderSchema);;

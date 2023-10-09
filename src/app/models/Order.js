@@ -15,6 +15,8 @@ const OrderSchema = new mongoose.Schema({
     shippingAddress: { type: String, maxLength: 255 ,required: true},
     description: { type: String, maxLength: 1000 },
     email: { type: String, maxLength: 255 ,required: true},
+    name: { type: String, maxLength: 255 ,required: true},
+    phone: { type: String, maxLength: 255 ,required: true},
     status: {
         type: String,
         enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Canceled', 'Returned'],

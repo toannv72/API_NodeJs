@@ -8,19 +8,21 @@ class OrderController {
 
     getAdmin(req, res, next) {
         try {
-            // Tìm đơn hàng theo ID và kiểm tra quyền truy cập của người dùng
-            const order = Order.find();
-            if (!order) {
-                return res.status(404).json({ error: 'Order not found.' });
-            }
-
-            // Kiểm tra xem người dùng có quyền truy cập đơn hàng không
-            if (order.user.toString() !== req.user._id.toString()) {
-                return res.status(403).json({ error: 'You do not have permission to access this order.' });
-            }
-
-            // Trả về thông tin đơn hàng
-            res.json(order);
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            Order.paginate({}, options)
+                .then((order) => {
+                    res.json(order);
+                })
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Could not retrieve the order.' });
@@ -35,6 +37,10 @@ class OrderController {
                 .then((order) => {
 
                     res.json(order);
+                })
+                .catch((err) => {
+                    res.json(err);
+
                 })
 
             // Trả về thông tin đơn hàng
@@ -229,6 +235,185 @@ class OrderController {
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
+
+
+
+    getAdminPending(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            Order.paginate({ status: "Pending" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getAdminProcessing(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            Order.paginate({ status: "Processing" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getAdminProcessing(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            Order.paginate({ status: "Processing" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getAdminProcessing(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            Order.paginate({ status: "Processing" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getAdminShipped(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            Order.paginate({ status: "Shipped" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getAdminDelivered(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            Order.paginate({ status: "Delivered" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getAdminCanceled(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            Order.paginate({ status: "Canceled" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getAdminReturned(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            Order.paginate({ status: "Returned" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
     getOne(req, res, next) {
         try {
             const id = req.params.id; // Lấy ID của đơn hàng từ URL
@@ -309,7 +494,7 @@ class OrderController {
     }
     post(req, res, next) {
         var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
-        const { products, totalAmount, shippingAddress, status ,description,email} = req.body;
+        const { products, totalAmount, shippingAddress, status, description, email, name, phone } = req.body;
 
         for (var i = 0; i < products.length; i++) {
             const productId = products[i]._id;
@@ -331,11 +516,13 @@ class OrderController {
         const newOrder = new Order({
             user: checkTokenValid.user._id,
             products,
-            totalAmount:totalAmount,
+            totalAmount: totalAmount,
             shippingAddress: shippingAddress,
             description,
             status,
-            email
+            email,
+            name,
+            phone
         });
         newOrder.save()
             .then((rating) => {
@@ -345,32 +532,49 @@ class OrderController {
                 return res.status(500).json(error);
             })
     }
-
+    putAdminStatus(req, res, next) {
+        try {
+            const { status } = req.params; // Lấy status
+            const { orders } = req.body;
+            console.log(11111111111, orders);
+            for (const orderId of orders) {
+                Order.findByIdAndUpdate({ _id: orderId }, { status: status })
+                    .catch(err => res.json({ error: err }))
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not update the order.' });
+        }
+    }
     put(req, res, next) {
         try {
             const { id } = req.params; // Lấy ID của đơn hàng từ URL
             const { status, shippingAddress } = req.body;
 
             // Kiểm tra xem đơn hàng tồn tại
-            const existingOrder = Order.findById(id);
-            if (!existingOrder) {
-                return res.status(404).json({ error: 'Order not found.' });
-            }
+            Order.findById(id)
+                .then((existingOrder) => {
+                    if (!existingOrder) {
+                        return res.status(404).json({ error: 'Order not found.' });
+                    }
 
-            // Kiểm tra xem người dùng có quyền cập nhật đơn hàng không
-            if (existingOrder.user.toString() !== req.user._id.toString()) {
-                return res.status(403).json({ error: 'You do not have permission to update this order.' });
-            }
+                    // Kiểm tra xem người dùng có quyền cập nhật đơn hàng không
+                    if (existingOrder.user.toString() !== req.user._id.toString()) {
+                        return res.status(403).json({ error: 'You do not have permission to update this order.' });
+                    }
 
-            // Cập nhật thông tin đơn hàng
-            existingOrder.status = status;
-            existingOrder.shippingAddress = shippingAddress;
+                    // Cập nhật thông tin đơn hàng
+                    existingOrder.status = status;
+                    existingOrder.shippingAddress = shippingAddress;
 
-            // Lưu đơn hàng đã cập nhật vào cơ sở dữ liệu
-            const updatedOrder = existingOrder.save();
+                    // Lưu đơn hàng đã cập nhật vào cơ sở dữ liệu
+                    const updatedOrder = existingOrder.save();
 
-            // Trả về đơn hàng đã cập nhật thành công
-            res.json(updatedOrder);
+                    // Trả về đơn hàng đã cập nhật thành công
+                    res.json(updatedOrder);
+                })
+
+
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Could not update the order.' });

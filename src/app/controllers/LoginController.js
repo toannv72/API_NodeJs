@@ -18,6 +18,7 @@ class movieControllers {
                         if (check) {
                             // var token = jwt.sign({ exp: Math.floor(Date.now() / 1000) + (10), user }, 'shhhhh');
                             var token = jwt.sign({ user }, Token.refreshToken);
+                            user._doc.password="MatKhauLaGi"
                             res.cookie("accessToken", token);
                             return res.json({ ...user, accessToken: token })
 

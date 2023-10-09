@@ -22,6 +22,30 @@ routerOrder
     .route("/user/returned")
     .get(OrderController.getUserReturned)
 
+routerOrder
+    .route("/admin/pending")
+    .get(OrderController.getAdminPending)
+routerOrder
+    .route("/admin/processing")
+    .get(OrderController.getAdminProcessing)
+routerOrder
+    .route("/admin/shipped")
+    .get(OrderController.getAdminShipped)
+routerOrder
+    .route("/admin/delivered")
+    .get(OrderController.getAdminDelivered)
+routerOrder
+    .route("/admin/canceled")
+    .get(OrderController.getAdminCanceled)
+routerOrder
+    .route("/admin/returned")
+    .get(OrderController.getAdminReturned)
+
+
+routerOrder
+    .route("/admin/put/:status")
+    .put(authenticatedAdmin, OrderController.putAdminStatus)
+
 
 routerOrder
     .route("/user/:id")
@@ -34,16 +58,15 @@ routerOrder
     .post(OrderController.check, OrderController.post)
 
 
-
 routerOrder
     .route("/:id")
-    .get(authenticatedAdmin,OrderController.getOne)
-    .put(authenticatedAdmin,OrderController.put)
+    .get(authenticatedAdmin, OrderController.getOne)
+    .put(authenticatedAdmin, OrderController.put)
     .delete(authenticatedAdmin, OrderController.delete)
 routerOrder
     .route("/")
-    .get(authenticatedAdmin,OrderController.getAdmin)
-    .post(authenticatedAdmin,OrderController.check, OrderController.post)
+    .get(authenticatedAdmin, OrderController.getAdmin)
+    .post(authenticatedAdmin, OrderController.check, OrderController.post)
 
 
 module.exports = routerOrder

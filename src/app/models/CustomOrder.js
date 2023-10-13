@@ -13,14 +13,13 @@ const messageSchema = new Schema({
 });
 
 const customOrderSchema = new Schema({
-    name: { type: String, required: true },
+    bird: { type: String, required: true },
     price: { type: Number },
     spokes: { type: Number},
     email: { type: String, required: true },
     phone: { type: String, required: true },
     image: { type: String },
     material: [{ type: String, enum: ['Kim loại', 'Gỗ', 'Nhựa'], required: true }],
-
     status: {
         type: String,
         enum: ['Pending', 'Deposit','Processing', 'Shipped', 'Delivered', 'Canceled', 'Returned'],

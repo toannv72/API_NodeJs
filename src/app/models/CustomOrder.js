@@ -13,6 +13,8 @@ const messageSchema = new Schema({
 });
 
 const customOrderSchema = new Schema({
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true }, // Tham chiếu đến người dùng đã đặt hàng
+    name: { type: String, required: true },
     bird: { type: String, required: true },
     price: { type: Number },
     spokes: { type: Number},

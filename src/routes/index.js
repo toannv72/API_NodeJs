@@ -9,6 +9,7 @@ const routerOrder = require("./order");
 const routerUser = require("./user");
 const routerRating = require("./rating");
 const routerFeedback = require("./feedback");
+const routerCustomOrder = require("./customOrder");
 
 module.exports = function (app) {
   app.use('/api/login', routerLogin) //oke
@@ -19,6 +20,9 @@ module.exports = function (app) {
   app.use('/api/rating', routerRating)
   app.use('/api/feedback', routerFeedback)
   app.use('/api/admin', routerAdmin)
+
+
+  app.use('/api/customOrder', routerCustomOrder)
 
 
 

@@ -16,11 +16,12 @@ const customOrderSchema = new Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true }, // Tham chiếu đến người dùng đã đặt hàng
     name: { type: String, required: true },
     bird: { type: String, required: true },
-    price: { type: Number },
-    spokes: { type: Number},
+    quantity: { type: Number, required: true },
+    price: { type: Number, required: true },
+    spokes: { type: Number, required: true},
     email: { type: String, required: true },
     phone: { type: String, required: true },
-    image: { type: String },
+    image: { type: String, required: true },
     material: [{ type: String, enum: ['Kim loại', 'Gỗ', 'Nhựa'], required: true }],
     status: {
         type: String,

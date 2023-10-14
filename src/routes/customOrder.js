@@ -47,9 +47,9 @@ const { authenticatedAdmin } = require('../config/db/authenticatedAdmin')
 //     .put(authenticatedAdmin, CustomOrderController.putAdminStatus)
 
 
-// routerCustomOrder
-//     .route("/user/:id")
-//     .get(CustomOrderController.getOrderUser)
+routerCustomOrder
+    .route("/user/:id")
+    .get(CustomOrderController.getOrderUser)
 
 
 routerCustomOrder

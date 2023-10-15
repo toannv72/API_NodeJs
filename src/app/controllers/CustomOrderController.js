@@ -80,6 +80,30 @@ class CustomOrderController {
             res.status(500).json({ error: 'Could not retrieve the CustomOrder.' });
         }
     }
+
+    getUserDeposit(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            CustomOrder.paginate({ user: checkTokenValid.user._id, status: "Deposit" }, options)
+                .then((CustomOrder) => {
+                    res.json(CustomOrder);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the CustomOrder.' });
+        }
+    }
     getUserProcessing(req, res, next) {
         try {
             const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
@@ -213,6 +237,28 @@ class CustomOrderController {
                 sort: { createdAt: sort },
             };
             CustomOrder.paginate({ status: "Pending" }, options)
+                .then((CustomOrder) => {
+                    res.json(CustomOrder);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the CustomOrder.' });
+        }
+    }
+    getAdminDeposit(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            CustomOrder.paginate({ status: "Deposit" }, options)
                 .then((CustomOrder) => {
                     res.json(CustomOrder);
                 })

@@ -35,7 +35,7 @@ class CustomOrderController {
             const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
             const limit = parseInt(req.query.limit) || 10000000000;
             const sort = parseInt(req.query.sort) || -1;
-   
+
             const options = {
                 page: page,
                 limit: limit,
@@ -46,7 +46,7 @@ class CustomOrderController {
             };
             // Tìm đơn hàng theo ID và kiểm tra quyền truy cập của người dùng
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
-            CustomOrder.paginate({user: checkTokenValid.user._id}, options, function (err, result) {
+            CustomOrder.paginate({ user: checkTokenValid.user._id }, options, function (err, result) {
                 return res.json(result)
             })
             // Trả về thông tin đơn hàng
@@ -127,7 +127,7 @@ class CustomOrderController {
             res.status(500).json({ error: 'Could not retrieve the CustomOrder.' });
         }
     }
-   
+
     getUserShipped(req, res, next) {
         try {
             const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
@@ -413,6 +413,29 @@ class CustomOrderController {
                 sort: { createdAt: sort },
             };
             CustomOrder.paginate({ status: "Returned" }, options)
+                .then((CustomOrder) => {
+                    res.json(CustomOrder);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the CustomOrder.' });
+        }
+    }
+
+    getAdminAll(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            CustomOrder.paginate({}, options)
                 .then((CustomOrder) => {
                     res.json(CustomOrder);
                 })

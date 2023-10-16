@@ -47,6 +47,9 @@ routerCustomOrder
     .route("/admin/returned")
     .get(CustomOrderController.getAdminReturned)
 
+routerCustomOrder
+    .route("/admin/all")
+    .get(CustomOrderController.getAdminAll)
 
 routerCustomOrder
     .route("/admin/put/:status")

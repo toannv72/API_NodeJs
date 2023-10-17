@@ -1,25 +1,25 @@
 const express = require('express')
 const routerRating = express.Router()
 const RatingController = require('../app/controllers/RatingController')
-const { authenticatedAdmin } = require('../config/db/authenticatedAdmin')
+const { authenticatedStaff } = require('../config/db/authenticatedStaff')
 
 
 
 // routerRating
 //     .route("/trash")
-//     .get(authenticatedAdmin, RatingController.trash)
+//     .get(authenticatedStaff, RatingController.trash)
 
 // routerRating.put('/restore/:id',
-//     authenticatedAdmin, RatingController.restore)
+//     authenticatedStaff, RatingController.restore)
 
 routerRating
     .route("/:id")
     .get(RatingController.getOne)
     .put(RatingController.put)
-    .delete(authenticatedAdmin, RatingController.delete)
+    .delete(authenticatedStaff, RatingController.delete)
 routerRating
     .route("/")
-    .get(authenticatedAdmin, RatingController.get)
+    .get(authenticatedStaff, RatingController.get)
     .post(RatingController.post)
 
 

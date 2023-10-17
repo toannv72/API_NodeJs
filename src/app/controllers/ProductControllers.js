@@ -259,6 +259,41 @@ class ProductControllers {
         })
     }
 
+    showProductStaff(req, res, next) {
+        const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+        const limit = parseInt(req.query.limit) || 10000000000; 
+        const sort = parseInt(req.query.sort) || -1; // Trang hiện tại, mặc định là trang 1
+        const options = {
+            page: page,
+            limit: limit,
+            // tùy chọn xác định cách sắp xếp và so sánh trong truy vấn.
+            collation: {
+                locale: 'en',
+            },
+            sort: { createdAt: sort },
+        };
+        Product.paginate({}, options, function (err, result) {
+            return res.json(result)
+        })
+    }
+    
+    showSold(req, res, next) {
+        const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+        const limit = parseInt(req.query.limit) || 10000000000; 
+        const sort = parseInt(req.query.sort) || -1; // Trang hiện tại, mặc định là trang 1
+        const options = {
+            page: page,
+            limit: limit,
+            // tùy chọn xác định cách sắp xếp và so sánh trong truy vấn.
+            collation: {
+                locale: 'en',
+            },
+            sort: { sold: sort },
+        };
+        Product.paginate({}, options, function (err, result) {
+            return res.json(result)
+        })
+    }
     get(req, res, next) {
         try {
             const id = req.params.id

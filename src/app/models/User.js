@@ -13,7 +13,7 @@ const User = new Schema({
     address: { type: String, maxLength: 255, default: '' },
     name: { type: String, maxLength: 255, default: '' },
     avatar: { type: String, maxLength: 255, default: '' },
-    admin: { type: Boolean, default: false },
+    role: { type: String, enum: ['user', 'manager','staff','admin'], default: 'user' },
     deletedAt: { type: String, maxLength: 255, default: null },
 },
     {
@@ -21,7 +21,7 @@ const User = new Schema({
     }
 )
 
-User.plugin(MongooseDelete,{ deletedAt : true , overrideMethods: 'all' });
+User.plugin(MongooseDelete, { deletedAt: true, overrideMethods: 'all' });
 User.plugin(mongoosePaginate);
 module.exports = mongoose.model('user', User);
 

@@ -503,7 +503,8 @@ class OrderController {
             Product.findById(productId)
                 .then((dbProduct) => {
                     const a = dbProduct.quantity - quantityToReduce;
-                    Product.findByIdAndUpdate(dbProduct._id, { quantity: a })
+                    const b = dbProduct.sold + quantityToReduce;
+                    Product.findByIdAndUpdate(dbProduct._id, { quantity: a, sold: b })
                         .then((Product) => {
 
                         })

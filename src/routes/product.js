@@ -1,25 +1,28 @@
 const express = require('express')
 const routerProduct = express.Router()
 const ProductControllers = require('../app/controllers/ProductControllers')
-const { authenticatedAdmin } = require('../config/db/authenticatedAdmin')
+const { authenticatedStaff } = require('../config/db/authenticatedStaff')
 
 
 
 
 
 // xóa mềm
-routerProduct.delete('/:id', authenticatedAdmin, ProductControllers.delete)
+routerProduct.delete('/:id', authenticatedStaff, ProductControllers.delete)
 
 // khôi phục dữ liệu đã xóa
-routerProduct.put('/restore/:id', authenticatedAdmin, ProductControllers.restore)
+routerProduct.put('/restore/:id', authenticatedStaff, ProductControllers.restore)
 // danh sách đã xóa 
-routerProduct.get('/trash', authenticatedAdmin, ProductControllers.trash)
+routerProduct.get('/trash', authenticatedStaff, ProductControllers.trash)
 routerProduct.get('/search?', ProductControllers.search)
 
+routerProduct.get('/staff', authenticatedStaff,ProductControllers.showProductStaff)
+// sắp xếp sản phẩm theo thứ tự bán chạy
+routerProduct.get('/sold', ProductControllers.showSold)
 // lấy sản phẩm theo ID 
 routerProduct.get('/:id', ProductControllers.get)
 routerProduct.put('/:id', ProductControllers.put)
-routerProduct.post('/', authenticatedAdmin, ProductControllers.post)
+routerProduct.post('/', authenticatedStaff, ProductControllers.post)
 routerProduct.get('/', ProductControllers.show)
 
 module.exports = routerProduct

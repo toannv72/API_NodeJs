@@ -186,6 +186,7 @@ class UserController {
                 locale: 'en',
             },
         };
+        console.log(11111111111);
         User.paginate({}, options, function (err, result) {
             res.json(result)
         })

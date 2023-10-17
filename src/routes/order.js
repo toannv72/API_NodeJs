@@ -1,7 +1,7 @@
 const express = require('express')
 const routerOrder = express.Router()
 const OrderController = require('../app/controllers/OrderController')
-const { authenticatedAdmin } = require('../config/db/authenticatedAdmin')
+const { authenticatedStaff } = require('../config/db/authenticatedStaff')
 
 routerOrder
     .route("/user/pending")
@@ -44,7 +44,7 @@ routerOrder
 
 routerOrder
     .route("/admin/put/:status")
-    .put(authenticatedAdmin, OrderController.putAdminStatus)
+    .put(authenticatedStaff, OrderController.putAdminStatus)
 
 
 routerOrder
@@ -60,13 +60,13 @@ routerOrder
 
 routerOrder
     .route("/:id")
-    .get(authenticatedAdmin, OrderController.getOne)
-    .put(authenticatedAdmin, OrderController.put)
-    .delete(authenticatedAdmin, OrderController.delete)
+    .get(authenticatedStaff, OrderController.getOne)
+    .put(authenticatedStaff, OrderController.put)
+    .delete(authenticatedStaff, OrderController.delete)
 routerOrder
     .route("/")
-    .get(authenticatedAdmin, OrderController.getAdmin)
-    .post(authenticatedAdmin, OrderController.check, OrderController.post)
+    .get(authenticatedStaff, OrderController.getAdmin)
+    .post(authenticatedStaff, OrderController.check, OrderController.post)
 
 
 module.exports = routerOrder

@@ -17,7 +17,7 @@ const customOrderSchema = new Schema({
     name: { type: String, required: true },
     bird: { type: String, required: true },
     quantity: { type: Number, required: true },
-    price: { type: Number, required: true ,default: 0 },
+    price: { type: Number,default: 0 },
     spokes: { type: Number, required: true},
     email: { type: String, required: true },
     phone: { type: String, required: true },

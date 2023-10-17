@@ -1,7 +1,7 @@
 const express = require('express')
 const routerUser = express.Router()
 const UserController = require('../app/controllers/UserController')
-const { authenticatedAdmin } = require('../config/db/authenticatedAdmin')
+const { authenticatedStaff } = require('../config/db/authenticatedStaff')
 
 
 
@@ -11,19 +11,19 @@ routerUser
 
 routerUser
     .route("/trash")
-    .get(authenticatedAdmin, UserController.trash)
+    .get(authenticatedStaff, UserController.trash)
 
 routerUser.put('/restore/:id',
-    authenticatedAdmin, UserController.restore)
+    authenticatedStaff, UserController.restore)
 
 routerUser
     .route("/:id")
     .get(UserController.getOne)
     .put(UserController.put)
-    .delete(authenticatedAdmin, UserController.delete)
+    .delete(authenticatedStaff, UserController.delete)
 routerUser
     .route("/")
-    .get(authenticatedAdmin, UserController.get)
+    .get(authenticatedStaff, UserController.get)
     .post(UserController.post)
 
 

@@ -533,20 +533,45 @@ class OrderController {
                 return res.status(500).json(error);
             })
     }
-    putAdminStatus(req, res, next) {
+    // putAdminStatus(req, res, next) {
+    //     try {
+    //         const { status } = req.params; // Lấy status
+    //         const { orders } = req.body;
+    //         console.log(22222222, orders);
+    //         for (const orderId of orders) {
+    //             console.log(11111111, orders);
+    //             Order.findByIdAndUpdate({ _id: orderId }, { status: status })
+    //                 .catch(err => res.json({ error: err }))
+    //         }
+    //     } catch (error) {
+    //         console.error(error);
+    //         res.status(500).json({ error: 'Could not update the order.' });
+    //     }
+    // }
+    async putAdminStatus(req, res, next) {
         try {
             const { status } = req.params; // Lấy status
             const { orders } = req.body;
-            console.log(11111111111, orders);
             for (const orderId of orders) {
-                Order.findByIdAndUpdate({ _id: orderId }, { status: status })
-                    .catch(err => res.json({ error: err }))
+                try {
+                    // Sử dụng await để chờ cho đến khi cập nhật được hoàn thành
+                    await Order.findByIdAndUpdate({ _id: orderId }, { status: status });
+                } catch (err) {
+                    // Xử lý lỗi khi cập nhật không thành công
+                    console.error(`Error updating order ${orderId}: ${err.message}`);
+                    // Bạn có thể quyết định liệu bạn muốn tiếp tục với các lệnh tiếp theo hoặc dừng luồng ở đây.
+                    // Nếu bạn muốn dừng, bạn có thể sử dụng return hoặc throw err.
+                }
             }
+    
+            // Trả về kết quả thành công nếu mọi thứ đều ok
+            res.json({ message: 'Orders updated successfully.' });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Could not update the order.' });
+            res.status(500).json({ error: 'Could not update the orders.' });
         }
     }
+    
     put(req, res, next) {
         try {
             const { id } = req.params; // Lấy ID của đơn hàng từ URL

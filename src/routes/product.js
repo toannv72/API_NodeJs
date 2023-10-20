@@ -6,7 +6,9 @@ const { authenticatedStaff } = require('../config/db/authenticatedStaff')
 
 
 
-
+routerProduct
+    .route("/countByProduct")
+    .get( ProductControllers.countByProduct)
 // xóa mềm
 routerProduct.delete('/:id', authenticatedStaff, ProductControllers.delete)
 
@@ -19,6 +21,8 @@ routerProduct.get('/search?', ProductControllers.search)
 routerProduct.get('/staff', authenticatedStaff,ProductControllers.showProductStaff)
 // sắp xếp sản phẩm theo thứ tự bán chạy
 routerProduct.get('/sold', ProductControllers.showSold)
+
+// routerProduct.get('/sold', ProductControllers.showSold)
 // lấy sản phẩm theo ID 
 routerProduct.get('/:id', ProductControllers.get)
 routerProduct.put('/:id', ProductControllers.put)

@@ -3,7 +3,7 @@ var bcrypt = require('bcryptjs');
 const Token = require('../../config/db/config');
 var jwt = require('jsonwebtoken');
 const Product = require('../models/Product');
-
+const moment = require('moment');
 class OrderController {
 
     getAdmin(req, res, next) {
@@ -227,6 +227,29 @@ class OrderController {
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
             Order.paginate({ user: checkTokenValid.user._id, status: "Returned" }, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
+    getUserAll(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+            Order.paginate({ user: checkTokenValid.user._id}, options)
                 .then((order) => {
                     res.json(order);
                 })
@@ -619,6 +642,43 @@ class OrderController {
     } catch(error) {
         res.status(500).json(error);
 
+    }
+
+    getAdminDeliveredByMonth(req, res, next) {
+        try {
+            const year = parseInt(req.query.year) || moment().year(); // Năm hiện tại, mặc định là năm hiện tại
+            // Chuyển đổi ngày bắt đầu và ngày kết thúc thành đối tượng Date
+            const startDate = new Date(`${year}-01-01T00:00:00.000Z`);
+            const endDate = new Date(`${year}-12-31T23:59:59.999Z`);
+    
+            // Truy vấn tổng tiền của đơn hàng theo từng tháng trong năm
+            Order.aggregate([
+                {
+                    $match: {
+                        status: "Processing", // hoặc bất kỳ trạng thái đơn hàng nào bạn muốn
+                        createdAt: {
+                            $gte: startDate, // Ngày bắt đầu của năm
+                            $lte: endDate // Ngày kết thúc của năm
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: { month: { $month: "$createdAt" } }, // Nhóm theo tháng
+                        totalAmount: { $sum: "$totalAmount" }, // Tính tổng tiền của các đơn hàng trong nhóm
+                        totalQuantity: { $sum: { $sum: "$products.quantity" } } 
+                    }
+                },
+                {
+                    $sort: { "_id.month": 1 } // Sắp xếp theo tháng
+                }
+            ]).then((result) => {
+                res.json(result);
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the total amounts.' });
+        }
     }
 }
 module.exports = new OrderController;

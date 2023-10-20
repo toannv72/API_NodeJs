@@ -3,8 +3,6 @@ const Token = require('../../config/db/config');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 class UserController {
-
-
     put(req, res, next) {
         console.log(req.body);
         User.findByIdAndUpdate(req.params.id,
@@ -28,6 +26,25 @@ class UserController {
             .then(courses =>
                 res.json(courses))
             .catch(next)
+    }
+    countByRole(req, res, next) {
+        req.params.role
+        User.aggregate([
+            {
+                $match: { role: req.params.role } // Chỉ lấy người dùng có vai trò là "user"
+            },
+            {
+                $group: {
+                    _id: '$role', // Nhóm theo trường 'role'
+                    totalUsers: { $sum: 1 } // Đếm số lượng người dùng trong nhóm
+                }
+            }
+        ]).then((result) => {
+            res.json(result);
+        }).catch((error) => {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the user count.' });
+        });
     }
 
     changePassword(req, res, next) {

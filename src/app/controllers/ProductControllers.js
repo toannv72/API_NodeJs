@@ -243,7 +243,26 @@ class ProductControllers {
 
     show(req, res, next) {
         const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
-        const limit = parseInt(req.query.limit) || 10000000000; 
+        const limit = parseInt(req.query.limit) || 10000000000;
+        const sort = parseInt(req.query.sort) || -1; // Trang hiện tại, mặc định là trang 1
+        const options = {
+            page: page,
+            limit: limit,
+            // tùy chọn xác định cách sắp xếp và so sánh trong truy vấn.
+            collation: {
+                locale: 'en',
+            },
+            sort: { createdAt: sort },
+        };
+        const query = { quantity: { $gt: 1 } };
+        Product.paginate(query, options, function (err, result) {
+            return res.json(result)
+        })
+    }
+
+    showProductStaff(req, res, next) {
+        const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+        const limit = parseInt(req.query.limit) || 10000000000;
         const sort = parseInt(req.query.sort) || -1; // Trang hiện tại, mặc định là trang 1
         const options = {
             page: page,
@@ -259,27 +278,9 @@ class ProductControllers {
         })
     }
 
-    showProductStaff(req, res, next) {
-        const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
-        const limit = parseInt(req.query.limit) || 10000000000; 
-        const sort = parseInt(req.query.sort) || -1; // Trang hiện tại, mặc định là trang 1
-        const options = {
-            page: page,
-            limit: limit,
-            // tùy chọn xác định cách sắp xếp và so sánh trong truy vấn.
-            collation: {
-                locale: 'en',
-            },
-            sort: { createdAt: sort },
-        };
-        Product.paginate({}, options, function (err, result) {
-            return res.json(result)
-        })
-    }
-    
     showSold(req, res, next) {
         const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
-        const limit = parseInt(req.query.limit) || 10000000000; 
+        const limit = parseInt(req.query.limit) || 10000000000;
         const sort = parseInt(req.query.sort) || -1; // Trang hiện tại, mặc định là trang 1
         const options = {
             page: page,
@@ -290,7 +291,8 @@ class ProductControllers {
             },
             sort: { sold: sort },
         };
-        Product.paginate({}, options, function (err, result) {
+        const query = { quantity: { $gt: 1 } };
+        Product.paginate(query, options, function (err, result) {
             return res.json(result)
         })
     }
@@ -322,7 +324,21 @@ class ProductControllers {
 
     }
 
-
+    countByProduct(req, res, next) {
+        Product.aggregate([
+            {
+                $group: {
+                    _id: null, // Nhóm theo trường 'name'
+                    totalProducts: { $sum: 1 } // Đếm số lượng người dùng trong nhóm
+                }
+            }
+        ]).then((result) => {
+            res.json(result);
+        }).catch((error) => {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the user count.' });
+        });
+    }
 
 }
 module.exports = new ProductControllers;

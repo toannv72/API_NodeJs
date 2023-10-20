@@ -4,6 +4,10 @@ const UserController = require('../app/controllers/UserController')
 const {authenticatedAdmin} = require('../config/db/authenticatedAdmin')
 
 
+routerUser
+    .route("/countByRole/:role")
+    .get( UserController.countByRole)
+
 
 routerUser
     .route("/changePassword/")

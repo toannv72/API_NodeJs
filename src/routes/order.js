@@ -3,6 +3,12 @@ const routerOrder = express.Router()
 const OrderController = require('../app/controllers/OrderController')
 const { authenticatedStaff } = require('../config/db/authenticatedStaff')
 
+
+routerOrder
+    .route("/manager/dashboard")
+    .get(OrderController.getAdminDeliveredByMonth)
+
+
 routerOrder
     .route("/user/pending")
     .get(OrderController.getUserPending)
@@ -21,6 +27,10 @@ routerOrder
 routerOrder
     .route("/user/returned")
     .get(OrderController.getUserReturned)
+
+routerOrder
+    .route("/user/all")
+    .get(OrderController.getUserAll)
 
 routerOrder
     .route("/admin/pending")

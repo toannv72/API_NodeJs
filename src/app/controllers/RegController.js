@@ -64,28 +64,20 @@ class RegController {
                                     error: "Invalid username or password.",
                                 }) :
                                 bcrypt.compare(password, user.password, function (err, check) {
-
                                     if (check) {
                                         // var token = jwt.sign({ exp: Math.floor(Date.now() / 1000) + (10), user }, 'shhhhh');
                                         var token = jwt.sign({ user }, Token.refreshToken);
-                                        res.cookie("accessToken", token);
+                                        // res.cookie("accessToken", token);
                                         return res.json({ ...user, accessToken: token })
-
                                     }
                                     return res.status(401).send({
                                         error: "Invalid username or password.",
                                     })
                                 });
-
-
                         })
                         .catch(next => {
-
                             res.status(500).json(next)
-
                         })
-
-
                 )
                 .catch((error) => {
                     res.status(500).send(error)

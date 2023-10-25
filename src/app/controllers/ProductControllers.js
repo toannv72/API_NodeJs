@@ -45,13 +45,13 @@ class ProductControllers {
             return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
         }
         const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
-        const limit = parseInt(req.query.limit) || 10; // Số lượng phần tử trên mỗi trang, mặc định là 10
+        const limit = parseInt(req.query.limit) || 9; // Số lượng phần tử trên mỗi trang, mặc định là 10
         const formData = req.query.name
         const escapedSearchTerm = escapeRegExp(formData);
 
         const options = {
             page: page,
-            limit: 5,
+            limit: limit,
 
             // tùy chọn xác định cách sắp xếp và so sánh trong truy vấn.
             collation: {
@@ -66,13 +66,12 @@ class ProductControllers {
                 })
                 .catch(next)
         } else {
-
             Product.paginate({ name: { $regex: escapedSearchTerm } }, options, function (err, result) {
 
                 if (result.totalPages < result.page) {
                     const options1 = {
                         page: result.totalPages,
-                        limit: 5,
+                        limit: 9,
 
                         // tùy chọn xác định cách sắp xếp và so sánh trong truy vấn.
                         collation: {
@@ -84,7 +83,7 @@ class ProductControllers {
 
                         return res.json(
                             {
-                                movie: (data.docs),
+                                products: (data.docs),
                                 totalPages: data.totalPages,
                                 page: result.totalPages,
                                 prevPage: data.prevPage,
@@ -99,7 +98,7 @@ class ProductControllers {
 
                     return res.json(
                         {
-                            movie: (result.docs),
+                            products: (result.docs),
                             totalPages: result.totalPages,
                             page: result.page,
                             prevPage: result.prevPage,
@@ -254,7 +253,7 @@ class ProductControllers {
             },
             sort: { createdAt: sort },
         };
-        const query = { quantity: { $gt: 1 } };
+        const query = { quantity: { $gt: 0 } };
         Product.paginate(query, options, function (err, result) {
             return res.json(result)
         })
@@ -291,7 +290,7 @@ class ProductControllers {
             },
             sort: { sold: sort },
         };
-        const query = { quantity: { $gt: 1 } };
+        const query = { quantity: { $gt: 0 } };
         Product.paginate(query, options, function (err, result) {
             return res.json(result)
         })

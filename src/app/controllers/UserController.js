@@ -68,7 +68,7 @@ class UserController {
                                 var token = jwt.sign({ user }, Token.refreshToken);
                                 res.cookie("accessToken", token);
                                 return res.json({ ...courses, accessToken: token })
-                              
+
                             })
                             .catch(next => {
                                 res.json(next)
@@ -203,7 +203,6 @@ class UserController {
                 locale: 'en',
             },
         };
-        console.log(11111111111);
         User.paginate({}, options, function (err, result) {
             res.json(result)
         })
@@ -217,12 +216,21 @@ class UserController {
     }
 
     delete(req, res, next) {
-        User.delete({ _id: req.params.id })
-            .then((User => {
-                res.send(User)
-            }
-            ))
-            .catch(error => res.status(500).json({ error: 'Could not retrieve product.' }))
+        User.findById(req.params.id)
+            .then((data => {
+                console.log(1111111111111111,data.role)
+                if (data.role==='admin') {
+                    res.status(500).json({ error: 'Không thể xóa tài khoản này' })
+                } else {
+                    User.delete({ _id: req.params.id })
+                        .then((User => {
+                            res.send(User)
+                        }))
+                        .catch(error => res.status(500).json({ error: 'Could not retrieve User.' }))
+                }
+            }))
+            .catch(err => res.status(err))
+
 
     } catch(error) {
         res.status(500).json(error);

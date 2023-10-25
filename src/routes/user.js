@@ -25,6 +25,7 @@ routerUser
     .get(UserController.getOne)
     .put(UserController.put)
     .delete(authenticatedAdmin, UserController.delete)
+    
 routerUser
     .route("/")
     .get(authenticatedAdmin, UserController.get)

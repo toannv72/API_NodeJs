@@ -51,6 +51,9 @@ routerOrder
     .route("/admin/returned")
     .get(OrderController.getAdminReturned)
 
+routerOrder
+    .route("/admin/all")
+    .get(OrderController.getAdminAll)
 
 routerOrder
     .route("/admin/put/:status")

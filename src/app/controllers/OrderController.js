@@ -437,6 +437,28 @@ class OrderController {
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
+    getAdminAll(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1; // Trang hiện tại, mặc định là trang 1
+            const limit = parseInt(req.query.limit) || 10000000000;
+            const sort = parseInt(req.query.sort) || -1;
+            const options = {
+                page: page,
+                limit: limit,
+                collation: {
+                    locale: 'en',
+                },
+                sort: { createdAt: sort },
+            };
+            Order.paginate({}, options)
+                .then((order) => {
+                    res.json(order);
+                })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Could not retrieve the order.' });
+        }
+    }
     getOne(req, res, next) {
         try {
             const id = req.params.id; // Lấy ID của đơn hàng từ URL

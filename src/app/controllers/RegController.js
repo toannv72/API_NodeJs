@@ -36,7 +36,6 @@ class RegController {
                     {
                         error: `Phone must be at least 10 characters long`
                     })
-
             }
             User.findOne({ username: formData.username })
             .then((user,next)=>{

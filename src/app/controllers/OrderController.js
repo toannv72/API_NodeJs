@@ -677,7 +677,7 @@ class OrderController {
             Order.aggregate([
                 {
                     $match: {
-                        status: "Processing", // hoặc bất kỳ trạng thái đơn hàng nào bạn muốn
+                        status: "Delivered", // hoặc bất kỳ trạng thái đơn hàng nào bạn muốn
                         createdAt: {
                             $gte: startDate, // Ngày bắt đầu của năm
                             $lte: endDate // Ngày kết thúc của năm

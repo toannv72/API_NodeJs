@@ -27,34 +27,38 @@ routerCustomOrder
 
 routerCustomOrder
     .route("/admin/pending")
-    .get(CustomOrderController.getAdminPending)
+    .get(authenticatedStaff,CustomOrderController.getAdminPending)
 routerCustomOrder
     .route("/admin/deposit")
-    .get(CustomOrderController.getAdminDeposit)
+    .get(authenticatedStaff,CustomOrderController.getAdminDeposit)
 routerCustomOrder
     .route("/admin/processing")
-    .get(CustomOrderController.getAdminProcessing)
+    .get(authenticatedStaff,CustomOrderController.getAdminProcessing)
 routerCustomOrder
     .route("/admin/shipped")
-    .get(CustomOrderController.getAdminShipped)
+    .get(authenticatedStaff,CustomOrderController.getAdminShipped)
 routerCustomOrder
     .route("/admin/delivered")
-    .get(CustomOrderController.getAdminDelivered)
+    .get(authenticatedStaff,CustomOrderController.getAdminDelivered)
 routerCustomOrder
     .route("/admin/canceled")
-    .get(CustomOrderController.getAdminCanceled)
+    .get(authenticatedStaff,CustomOrderController.getAdminCanceled)
 routerCustomOrder
     .route("/admin/returned")
-    .get(CustomOrderController.getAdminReturned)
+    .get(authenticatedStaff,CustomOrderController.getAdminReturned)
 
 routerCustomOrder
     .route("/admin/all")
-    .get(CustomOrderController.getAdminAll)
+    .get(authenticatedStaff,CustomOrderController.getAdminAll)
+
 
 routerCustomOrder
     .route("/admin/put/:status")
     .put(authenticatedStaff, CustomOrderController.putAdminStatus)
 
+routerCustomOrder
+    .route("/admin/:id")
+    .put(authenticatedStaff,CustomOrderController.putAdminPrice)
 
 routerCustomOrder
     .route("/user/:id")

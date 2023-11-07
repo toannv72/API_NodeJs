@@ -59,6 +59,9 @@ routerOrder
     .route("/admin/put/:status")
     .put(authenticatedStaff, OrderController.putAdminStatus)
 
+routerOrder
+    .route("/user/put/:id")
+    .put( OrderController.putUserStatus)
 
 routerOrder
     .route("/user/:id")

@@ -543,7 +543,6 @@ class CustomOrderController {
         try {
             const { status } = req.params; // Lấy status
             const { orders } = req.body;
-            console.log(11111111111, orders);
             for (const orderId of orders) {
                 CustomOrder.findByIdAndUpdate({ _id: orderId }, { status: status })
                     .catch(err => res.json({ error: err }))
@@ -553,6 +552,21 @@ class CustomOrderController {
             res.status(500).json({ error: 'Could not update the CustomOrder.' });
         }
     }
+
+    putAdminPrice(req, res, next) {
+        try {
+            const { id } = req.params; // Lấy ID của đơn hàng từ URL
+            const { price } = req.body;
+
+            CustomOrder.findByIdAndUpdate(id, { price })
+                .catch(err => res.json({ error: err }))
+
+        } catch (error) {
+            
+            res.status(500).json({ error: error });
+        }
+    }
+
     put(req, res, next) {
         try {
             const { id } = req.params; // Lấy ID của đơn hàng từ URL

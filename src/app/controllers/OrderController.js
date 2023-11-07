@@ -17,14 +17,14 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             Order.paginate({}, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
 
@@ -45,7 +45,7 @@ class OrderController {
 
             // Trả về thông tin đơn hàng
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
 
@@ -62,7 +62,7 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
             Order.paginate({ user: checkTokenValid.user._id, status: "Pending" }, options)
@@ -70,7 +70,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -85,7 +85,7 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
             Order.paginate({ user: checkTokenValid.user._id, status: "Processing" }, options)
@@ -93,7 +93,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -108,7 +108,7 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
             Order.paginate({ user: checkTokenValid.user._id, status: "Processing" }, options)
@@ -116,7 +116,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -131,7 +131,7 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
             Order.paginate({ user: checkTokenValid.user._id, status: "Processing" }, options)
@@ -139,7 +139,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -154,7 +154,7 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
             Order.paginate({ user: checkTokenValid.user._id, status: "Shipped" }, options)
@@ -162,7 +162,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -177,7 +177,7 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
             Order.paginate({ user: checkTokenValid.user._id, status: "Delivered" }, options)
@@ -185,7 +185,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -200,7 +200,7 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
             Order.paginate({ user: checkTokenValid.user._id, status: "Canceled" }, options)
@@ -208,7 +208,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -223,7 +223,7 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
             Order.paginate({ user: checkTokenValid.user._id, status: "Returned" }, options)
@@ -231,7 +231,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -246,7 +246,7 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
             Order.paginate({ user: checkTokenValid.user._id}, options)
@@ -254,7 +254,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -272,14 +272,14 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             Order.paginate({ status: "Pending" }, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -294,14 +294,14 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             Order.paginate({ status: "Processing" }, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -316,14 +316,14 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             Order.paginate({ status: "Processing" }, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -338,14 +338,14 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             Order.paginate({ status: "Processing" }, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -360,14 +360,14 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             Order.paginate({ status: "Shipped" }, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -382,14 +382,14 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             Order.paginate({ status: "Delivered" }, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -404,14 +404,14 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             Order.paginate({ status: "Canceled" }, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -426,14 +426,14 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             Order.paginate({ status: "Returned" }, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -448,14 +448,14 @@ class OrderController {
                 collation: {
                     locale: 'en',
                 },
-                sort: { createdAt: sort },
+                sort: { updatedAt: sort },
             };
             Order.paginate({}, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -480,7 +480,7 @@ class OrderController {
                     res.status(500).json(next)
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
 
@@ -507,7 +507,7 @@ class OrderController {
                     res.status(500).json(next)
                 })
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
 
@@ -589,7 +589,7 @@ class OrderController {
     //                 .catch(err => res.json({ error: err }))
     //         }
     //     } catch (error) {
-    //         console.error(error);
+    //         
     //         res.status(500).json({ error: 'Could not update the order.' });
     //     }
     // }
@@ -612,11 +612,23 @@ class OrderController {
             // Trả về kết quả thành công nếu mọi thứ đều ok
             res.json({ message: 'Orders updated successfully.' });
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not update the orders.' });
         }
     }
+    async putUserStatus(req, res, next) {
+        try {
+            const { id } = req.params; // Lấy status
+            const { orders } = req.body;
+            Order.findByIdAndUpdate(id, { status: "Canceled" });
     
+            // Trả về kết quả thành công nếu mọi thứ đều ok
+            res.json({ message: 'Orders updated successfully.' });
+        } catch (error) {
+          
+            res.status(500).json({ error: 'Could not update the orders.' });
+        }
+    }
     put(req, res, next) {
         try {
             const { id } = req.params; // Lấy ID của đơn hàng từ URL
@@ -647,7 +659,7 @@ class OrderController {
 
 
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not update the order.' });
         }
 
@@ -678,7 +690,7 @@ class OrderController {
                 {
                     $match: {
                         status: "Delivered", // hoặc bất kỳ trạng thái đơn hàng nào bạn muốn
-                        createdAt: {
+                        updatedAt: {
                             $gte: startDate, // Ngày bắt đầu của năm
                             $lte: endDate // Ngày kết thúc của năm
                         }
@@ -686,7 +698,7 @@ class OrderController {
                 },
                 {
                     $group: {
-                        _id: { month: { $month: "$createdAt" } }, // Nhóm theo tháng
+                        _id: { month: { $month: "$updatedAt" } }, // Nhóm theo tháng
                         totalAmount: { $sum: "$totalAmount" }, // Tính tổng tiền của các đơn hàng trong nhóm
                         totalQuantity: { $sum: { $sum: "$products.quantity" } } 
                     }
@@ -698,7 +710,7 @@ class OrderController {
                 res.json(result);
             });
         } catch (error) {
-            console.error(error);
+            
             res.status(500).json({ error: 'Could not retrieve the total amounts.' });
         }
     }

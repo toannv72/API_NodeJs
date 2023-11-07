@@ -260,7 +260,7 @@ class ProductControllers {
             },
             sort: sorts,
         };
-        const query = { quantity: { $gt: 0 },price: { $gte: minPrice, $lte: maxPrice } };
+        const query = { quantity: { $gt: 0 },reducedPrice: { $gte: minPrice, $lte: maxPrice } };
         Product.paginate(query, options, function (err, result) {
             return res.json(result)
         })
@@ -304,7 +304,7 @@ class ProductControllers {
             },
             sort: sorts,
         };
-        const query = { quantity: { $gt: 0 } ,price: { $gte: minPrice, $lte: maxPrice }};
+        const query = { quantity: { $gt: 0 } ,reducedPrice: { $gte: minPrice, $lte: maxPrice }};
         Product.paginate(query, options, function (err, result) {
             return res.json(result)
         })
@@ -325,7 +325,7 @@ class ProductControllers {
             },
             sort: { reducedPrice: sort },
         };
-        const query = { quantity: { $gt: 0 }, price: { $gte: minPrice, $lte: maxPrice } };
+        const query = { quantity: { $gt: 0 }, reducedPrice: { $gte: minPrice, $lte: maxPrice } };
         Product.paginate(query, options, function (err, result) {
             return res.json(result)
         })

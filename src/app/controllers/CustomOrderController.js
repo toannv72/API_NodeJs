@@ -542,9 +542,9 @@ class CustomOrderController {
     putAdminStatus(req, res, next) {
         try {
             const { status } = req.params; // Lấy status
-            const { orders } = req.body;
+            const { orders ,price} = req.body;
             for (const orderId of orders) {
-                CustomOrder.findByIdAndUpdate({ _id: orderId }, { status: status })
+                CustomOrder.findByIdAndUpdate({ _id: orderId }, { status: status,price:price})
                     .catch(err => res.json({ error: err }))
             }
         } catch (error) {
@@ -554,11 +554,12 @@ class CustomOrderController {
     }
 
     putAdminPrice(req, res, next) {
+
         try {
             const { id } = req.params; // Lấy ID của đơn hàng từ URL
             const { price } = req.body;
-
-            CustomOrder.findByIdAndUpdate(id, { price })
+console.log(11111111111,price);
+            CustomOrder.findByIdAndUpdate(id, { price ,status: 'Processing'})
                 .catch(err => res.json({ error: err }))
 
         } catch (error) {

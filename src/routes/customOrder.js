@@ -57,7 +57,7 @@ routerCustomOrder
     .put(authenticatedStaff, CustomOrderController.putAdminStatus)
 
 routerCustomOrder
-    .route("/admin/:id")
+    .route("/admin/put/price/:id")
     .put(authenticatedStaff,CustomOrderController.putAdminPrice)
 
 routerCustomOrder

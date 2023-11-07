@@ -619,11 +619,14 @@ class OrderController {
     async putUserStatus(req, res, next) {
         try {
             const { id } = req.params; // Lấy status
-            const { orders } = req.body;
-            Order.findByIdAndUpdate(id, { status: "Canceled" });
+        
+            Order.findByIdAndUpdate({_id:id}, { status: "Canceled" })
+                .then((e)=>{
+
+                    res.json({ message: 'Orders updated successfully.' });
+                })
     
             // Trả về kết quả thành công nếu mọi thứ đều ok
-            res.json({ message: 'Orders updated successfully.' });
         } catch (error) {
           
             res.status(500).json({ error: 'Could not update the orders.' });

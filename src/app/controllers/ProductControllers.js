@@ -48,7 +48,7 @@ class ProductControllers {
         const limit = parseInt(req.query.limit) || 9; // Số lượng phần tử trên mỗi trang, mặc định là 10
         const formData = req.query.name
         const escapedSearchTerm = escapeRegExp(formData);
-
+        const regex = new RegExp(escapedSearchTerm, 'i');
         const options = {
             page: page,
             limit: limit,
@@ -66,7 +66,7 @@ class ProductControllers {
                 })
                 .catch(next)
         } else {
-            Product.paginate({ name: { $regex: escapedSearchTerm } }, options, function (err, result) {
+            Product.paginate({ name: { $regex: regex } }, options, function (err, result) {
 
                 if (result.totalPages < result.page) {
                     const options1 = {

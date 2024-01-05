@@ -61,7 +61,7 @@ routerOrder
 
 routerOrder
     .route("/user/put/:id")
-    .put( OrderController.putUserStatus)
+    .put(OrderController.putUserStatus)
 
 routerOrder
     .route("/user/:id")
@@ -73,6 +73,13 @@ routerOrder
     .get(OrderController.getUser)
     .post(OrderController.check, OrderController.post)
 
+routerOrder
+    .route("/pay")
+    .post(OrderController.check, OrderController.pay)
+
+routerOrder
+    .route("/payment/bill/:id")
+    .post(OrderController.payBill)
 
 routerOrder
     .route("/:id")

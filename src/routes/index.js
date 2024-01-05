@@ -20,12 +20,7 @@ module.exports = function (app) {
   app.use('/api/rating', routerRating)
   app.use('/api/feedback', routerFeedback)
   app.use('/api/admin', routerAdmin)
-
-
   app.use('/api/customOrder', routerCustomOrder)
-
-
-
   app.use('/api/table', routerTable)
   app.use('*', router404)
 };

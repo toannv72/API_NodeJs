@@ -22,6 +22,10 @@ const OrderSchema = new mongoose.Schema({
         enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Canceled', 'Returned'],
         default: 'Pending', // Trạng thái mặc định là "Chờ xử lý"
     },
+    payment: { type: String, maxLength:255,
+        enum: ['Cash', 'Transfer', 'Pending','Cancel' ],
+        default: 'Pending', // Trạng thái mặc định là "Chờ xử lý"
+    },
     deletedAt: { type: String, maxLength: 255, default: null },
 }, {
     timestamps: true

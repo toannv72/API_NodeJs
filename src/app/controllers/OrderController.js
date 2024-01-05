@@ -24,7 +24,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
 
@@ -45,7 +45,7 @@ class OrderController {
 
             // Trả về thông tin đơn hàng
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
 
@@ -70,7 +70,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -93,7 +93,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -116,7 +116,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -139,7 +139,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -162,7 +162,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -185,7 +185,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -208,7 +208,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -231,7 +231,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -249,12 +249,12 @@ class OrderController {
                 sort: { updatedAt: sort },
             };
             var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
-            Order.paginate({ user: checkTokenValid.user._id}, options)
+            Order.paginate({ user: checkTokenValid.user._id }, options)
                 .then((order) => {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -279,7 +279,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -301,7 +301,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -323,7 +323,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -345,7 +345,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -367,7 +367,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -389,7 +389,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -411,7 +411,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -433,7 +433,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -455,7 +455,7 @@ class OrderController {
                     res.json(order);
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
     }
@@ -480,7 +480,7 @@ class OrderController {
                     res.status(500).json(next)
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
 
@@ -507,7 +507,7 @@ class OrderController {
                     res.status(500).json(next)
                 })
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the order.' });
         }
 
@@ -539,6 +539,110 @@ class OrderController {
     }
     post(req, res, next) {
         var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+        const { products, totalAmount, shippingAddress, status, description, email, name, phone, payment } = req.body;
+
+        for (var i = 0; i < products.length; i++) {
+            const productId = products[i]._id;
+            const quantityToReduce = products[i].quantity;
+            // Kiểm tra xem sản phẩm có đủ số lượng trong kho không
+            Product.findById(productId)
+                .then((dbProduct) => {
+                    const a = dbProduct.quantity - quantityToReduce;
+                    const b = dbProduct.sold + quantityToReduce;
+                    Product.findByIdAndUpdate(dbProduct._id, { quantity: a, sold: b })
+                        .then((Product) => {
+
+                        })
+                })
+                .catch((error) => {
+                    return res.status(500).json(error);
+                })
+        }
+
+        const newOrder = new Order({
+            user: checkTokenValid.user._id,
+            products,
+            payment,
+            totalAmount: totalAmount,
+            shippingAddress: shippingAddress,
+            description,
+            status,
+            email,
+            name,
+            phone
+        });
+        newOrder.save()
+            .then((rating) => {
+                return res.json(rating)
+            })
+            .catch((error) => {
+                return res.status(500).json(error);
+            })
+    }
+
+    payBill(req, res) {
+        function sortObject(obj) {
+            let sorted = {};
+            let str = [];
+            let key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    str.push(encodeURIComponent(key));
+                }
+            }
+            str.sort();
+            for (key = 0; key < str.length; key++) {
+                sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, "+");
+            }
+            return sorted;
+        }
+        let vnp_Params = req.query;
+
+        let secureHash = vnp_Params['vnp_SecureHash'];
+
+        delete vnp_Params['vnp_SecureHash'];
+        delete vnp_Params['vnp_SecureHashType'];
+
+        vnp_Params = sortObject(vnp_Params);
+
+        let config = Token;
+        let tmnCode = config.vnp_TmnCode
+        let secretKey = config.vnp_HashSecret
+
+        let querystring = require('qs');
+        let signData = querystring.stringify(vnp_Params, { encode: false });
+        let crypto = require("crypto");
+        let hmac = crypto.createHmac("sha512", secretKey);
+        let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
+
+        if (secureHash === signed) {
+            //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
+            console.log(1111111111111111, req.params);
+            console.log(22222222222222, req.query);
+            console.log(333333333333333, secureHash);
+            if (req.query.vnp_TransactionStatus == "00") {
+
+                Order.findByIdAndUpdate(req.params.id, { payment: 'Transfer' })
+                    .then(() => {
+                        res.json({ message: 'Orders updated successfully.' });
+                    })
+
+            } else {
+                Order.findByIdAndUpdate(req.params.id, { payment: 'Cancel' })
+                    .then(() => {
+                        res.json({ message: 'Orders updated successfully.' });
+                    })
+            }
+
+        } else {
+
+            res.render('success', { code: '97' })
+        }
+    }
+
+    pay(req, res, next) {
+        var checkTokenValid = jwt.verify(req.cookies.accessToken, Token.refreshToken);
+        var idOrder
         const { products, totalAmount, shippingAddress, status, description, email, name, phone } = req.body;
 
         for (var i = 0; i < products.length; i++) {
@@ -572,12 +676,84 @@ class OrderController {
         });
         newOrder.save()
             .then((rating) => {
-                return res.json(rating)
+                process.env.TZ = 'Asia/Ho_Chi_Minh';
+                let date = new Date();
+                let createDate = moment(date).format('YYYYMMDDHHmmss');
+
+                let ipAddr = req.headers['x-forwarded-for'] ||
+                    req.connection.remoteAddress ||
+                    req.socket.remoteAddress ||
+                    req.connection.socket.remoteAddress;
+                let config = Token;
+
+                let tmnCode = config.vnp_TmnCode;
+                let secretKey = config.vnp_HashSecret;
+                let vnpUrl = config.vnp_Url;
+                let returnUrl = config.vnp_ReturnUrl;
+                let orderId = moment(date).format('DDHHmmss');
+                let amount = req.body.amount;
+                let bankCode = req.body.bankCode;
+
+                let locale = req.body.language;
+                if (locale === null || locale === '') {
+                    locale = 'vn';
+                }
+                let currCode = 'VND';
+                let vnp_Params = {};
+                vnp_Params['vnp_Version'] = '2.1.0';
+                vnp_Params['vnp_Command'] = 'pay';
+                vnp_Params['vnp_TmnCode'] = tmnCode;
+                vnp_Params['vnp_Locale'] = locale;
+                vnp_Params['vnp_CurrCode'] = currCode;
+                vnp_Params['vnp_TxnRef'] = rating._id;
+                vnp_Params['vnp_OrderInfo'] = 'Thanh toan cho ma GD:' + rating._id;
+                vnp_Params['vnp_OrderType'] = 'other';
+                vnp_Params['vnp_Amount'] = amount * 100;
+                // đường dẫn trả về khi thanh toán 
+                vnp_Params['vnp_ReturnUrl'] = returnUrl + 'payment/bill/' + rating._id;
+                vnp_Params['vnp_IpAddr'] = ipAddr;
+                vnp_Params['vnp_CreateDate'] = createDate;
+                if (bankCode !== null && bankCode !== '') {
+                    vnp_Params['vnp_BankCode'] = bankCode;
+                }
+
+                vnp_Params = sortObject(vnp_Params);
+
+                let querystring = require('qs');
+                let signData = querystring.stringify(vnp_Params, { encode: false });
+                let crypto = require("crypto");
+                let hmac = crypto.createHmac("sha512", secretKey);
+                let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
+                vnp_Params['vnp_SecureHash'] = signed;
+                vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
+
+                res.json({ url: vnpUrl });
             })
             .catch((error) => {
                 return res.status(500).json(error);
             })
-    }
+
+
+        function sortObject(obj) {
+            let sorted = {};
+            let str = [];
+            let key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    str.push(encodeURIComponent(key));
+                }
+            }
+            str.sort();
+            for (key = 0; key < str.length; key++) {
+                sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, "+");
+            }
+            return sorted;
+        }
+    };
+
+    // Vui lòng tham khảo thêm tại code demo
+
+
     // putAdminStatus(req, res, next) {
     //     try {
     //         const { status } = req.params; // Lấy status
@@ -608,27 +784,27 @@ class OrderController {
                     // Nếu bạn muốn dừng, bạn có thể sử dụng return hoặc throw err.
                 }
             }
-    
+
             // Trả về kết quả thành công nếu mọi thứ đều ok
             res.json({ message: 'Orders updated successfully.' });
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not update the orders.' });
         }
     }
     async putUserStatus(req, res, next) {
         try {
             const { id } = req.params; // Lấy status
-        
-            Order.findByIdAndUpdate({_id:id}, { status: "Canceled" })
-                .then((e)=>{
+
+            Order.findByIdAndUpdate({ _id: id }, { status: "Canceled" })
+                .then((e) => {
 
                     res.json({ message: 'Orders updated successfully.' });
                 })
-    
+
             // Trả về kết quả thành công nếu mọi thứ đều ok
         } catch (error) {
-          
+
             res.status(500).json({ error: 'Could not update the orders.' });
         }
     }
@@ -662,7 +838,7 @@ class OrderController {
 
 
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not update the order.' });
         }
 
@@ -687,7 +863,7 @@ class OrderController {
             // Chuyển đổi ngày bắt đầu và ngày kết thúc thành đối tượng Date
             const startDate = new Date(`${year}-01-01T00:00:00.000Z`);
             const endDate = new Date(`${year}-12-31T23:59:59.999Z`);
-    
+
             // Truy vấn tổng tiền của đơn hàng theo từng tháng trong năm
             Order.aggregate([
                 {
@@ -703,7 +879,7 @@ class OrderController {
                     $group: {
                         _id: { month: { $month: "$updatedAt" } }, // Nhóm theo tháng
                         totalAmount: { $sum: "$totalAmount" }, // Tính tổng tiền của các đơn hàng trong nhóm
-                        totalQuantity: { $sum: { $sum: "$products.quantity" } } 
+                        totalQuantity: { $sum: { $sum: "$products.quantity" } }
                     }
                 },
                 {
@@ -713,7 +889,7 @@ class OrderController {
                 res.json(result);
             });
         } catch (error) {
-            
+
             res.status(500).json({ error: 'Could not retrieve the total amounts.' });
         }
     }
